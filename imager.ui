@@ -6,21 +6,21 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1711</width>
+    <width>1701</width>
     <height>667</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Imager</string>
+   <string>Strabismus Imager</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="ClickableLabel" name="bigLabel">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>30</y>
-      <width>960</width>
-      <height>540</height>
+      <x>1</x>
+      <y>1</y>
+      <width>961</width>
+      <height>541</height>
      </rect>
     </property>
     <property name="text">
@@ -34,7 +34,7 @@
     <property name="geometry">
      <rect>
       <x>980</x>
-      <y>30</y>
+      <y>0</y>
       <width>240</width>
       <height>135</height>
      </rect>
@@ -50,7 +50,7 @@
     <property name="geometry">
      <rect>
       <x>1220</x>
-      <y>30</y>
+      <y>0</y>
       <width>240</width>
       <height>135</height>
      </rect>
@@ -66,7 +66,7 @@
     <property name="geometry">
      <rect>
       <x>1460</x>
-      <y>30</y>
+      <y>0</y>
       <width>240</width>
       <height>135</height>
      </rect>
@@ -82,7 +82,7 @@
     <property name="geometry">
      <rect>
       <x>1220</x>
-      <y>165</y>
+      <y>135</y>
       <width>240</width>
       <height>135</height>
      </rect>
@@ -98,7 +98,7 @@
     <property name="geometry">
      <rect>
       <x>1460</x>
-      <y>165</y>
+      <y>135</y>
       <width>240</width>
       <height>135</height>
      </rect>
@@ -114,7 +114,7 @@
     <property name="geometry">
      <rect>
       <x>980</x>
-      <y>165</y>
+      <y>135</y>
       <width>240</width>
       <height>135</height>
      </rect>
@@ -130,7 +130,7 @@
     <property name="geometry">
      <rect>
       <x>1220</x>
-      <y>300</y>
+      <y>270</y>
       <width>240</width>
       <height>135</height>
      </rect>
@@ -146,7 +146,7 @@
     <property name="geometry">
      <rect>
       <x>1460</x>
-      <y>300</y>
+      <y>270</y>
       <width>240</width>
       <height>135</height>
      </rect>
@@ -162,7 +162,7 @@
     <property name="geometry">
      <rect>
       <x>980</x>
-      <y>300</y>
+      <y>270</y>
       <width>240</width>
       <height>135</height>
      </rect>
@@ -174,13 +174,23 @@
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
+   <widget class="VerticalScrollArea" name="widget" native="true">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>979</width>
+      <height>542</height>
+     </rect>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1711</width>
+     <width>1701</width>
      <height>21</height>
     </rect>
    </property>
@@ -189,6 +199,7 @@
      <string>File</string>
     </property>
     <addaction name="actionSelect_Folder"/>
+    <addaction name="actionadd"/>
    </widget>
    <addaction name="menuFile"/>
   </widget>
@@ -198,12 +209,23 @@
     <string>Select Folder</string>
    </property>
   </action>
+  <action name="actionadd">
+   <property name="text">
+    <string>add</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
    <class>ClickableLabel</class>
    <extends>QLabel</extends>
    <header>clickablelabel.h</header>
+  </customwidget>
+  <customwidget>
+   <class>VerticalScrollArea</class>
+   <extends>QWidget</extends>
+   <header>verticalscrollarea.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>

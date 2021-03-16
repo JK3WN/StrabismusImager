@@ -11,10 +11,12 @@ ClickableLabel::~ClickableLabel()
 
 void ClickableLabel::mousePressEvent(QMouseEvent *event)
 {
-    emit clicked();
+    if(ro==-1&&co==-1) emit clicked();
+    else emit nclicked(ro,co);
 }
 
 void ClickableLabel::mouseDoubleClickEvent(QMouseEvent *event)
 {
-    emit doubleClicked();
+    if(ro==-1&&co==-1) emit doubleClicked();
+    else emit ndoubleClicked(ro,co);
 }

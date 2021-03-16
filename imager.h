@@ -21,10 +21,14 @@ public:
 
 private slots:
     void chkFolder();
+    void addLabel();
+    void bugg(int row,int col);
+    void resetImg();
 
 private:
     Ui::Imager *ui;
     QDir *dir;
     QStringList list;
+    QPixmap defimg;
 };
 #endif // IMAGER_H

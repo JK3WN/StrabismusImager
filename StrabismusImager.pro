@@ -11,11 +11,13 @@ CONFIG += c++11
 SOURCES += \
     clickablelabel.cpp \
     main.cpp \
-    imager.cpp
+    imager.cpp \
+    verticalscrollarea.cpp
 
 HEADERS += \
     clickablelabel.h \
-    imager.h
+    imager.h \
+    verticalscrollarea.h
 
 FORMS += \
     imager.ui
@@ -24,3 +26,6 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+RESOURCES += \
+    resources.qrc
