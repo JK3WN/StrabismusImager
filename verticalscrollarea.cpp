@@ -30,7 +30,8 @@ void VerticalScrollArea::adaptSize()
 {
     int h=1.0*height()/nRows;
     content->setFixedHeight(h*rowCount());
-    content->setFixedWidth(viewport()->width());
+    if(grid->columnCount()<3) content->setFixedWidth(viewport()->width()/3*grid->columnCount());
+    else content->setFixedWidth(viewport()->width());
 }
 
 void VerticalScrollArea::resizeEvent(QResizeEvent *event)

@@ -20,10 +20,30 @@ void Imager::chkFolder()
 {
     dir=new QDir(QFileDialog::getExistingDirectory(this,"Select Folder"));
     list=dir->entryList(QStringList()<<"*.png"<<"*.jpg",QDir::Files);
+    mrow=0;
+    mcol=0;
+    for(const QString& v:list){
+        ClickableLabel *label=new ClickableLabel();
+        QFileInfo fi(v);
+        QPixmap pix(dir->absoluteFilePath(v));
+        label->setFixedSize(ui->imgArea->viewport()->width()/3,ui->imgArea->height()/3);
+        label->setPixmap(pix.scaled(label->size(),Qt::KeepAspectRatio));
+        label->setAlignment(Qt::AlignCenter);
+        ui->imgArea->addWidget(label,mrow,mcol);
+        label->ro=mrow;
+        label->co=mcol;
+        connect(label,SIGNAL(nclicked(int,int)),this,SLOT(bugg(int,int)));
+        mcol++;
+        if(mcol>=3){
+            mcol=mcol-3;
+            mrow++;
+        }
+    }
 }
 
 void Imager::addLabel()
 {
+    /*
     int row=ui->widget->rowCount();
     for(int col=0;col<3;col++){
         ClickableLabel *label=new ClickableLabel();
@@ -37,6 +57,7 @@ void Imager::addLabel()
         label->co=col;
         connect(label,SIGNAL(nclicked(int,int)),this,SLOT(bugg(int,int)));
     }
+    */
 }
 
 void Imager::bugg(int row,int col)

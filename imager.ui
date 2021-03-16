@@ -174,7 +174,7 @@
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
-   <widget class="VerticalScrollArea" name="widget" native="true">
+   <widget class="VerticalScrollArea" name="imgArea" native="true">
     <property name="geometry">
      <rect>
       <x>0</x>

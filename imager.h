@@ -30,5 +30,6 @@ private:
     QDir *dir;
     QStringList list;
     QPixmap defimg;
+    int mrow=0,mcol=0;
 };
 #endif // IMAGER_H
