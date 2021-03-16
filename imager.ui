@@ -199,7 +199,6 @@
      <string>File</string>
     </property>
     <addaction name="actionSelect_Folder"/>
-    <addaction name="actionadd"/>
    </widget>
    <addaction name="menuFile"/>
   </widget>

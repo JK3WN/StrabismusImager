@@ -7,7 +7,6 @@ Imager::Imager(QWidget *parent)
 {
     ui->setupUi(this);
     connect(ui->actionSelect_Folder,SIGNAL(triggered()),this,SLOT(chkFolder()));
-    connect(ui->actionadd,SIGNAL(triggered()),this,SLOT(addLabel()));
     resetImg();
 }
 
@@ -22,9 +21,9 @@ void Imager::chkFolder()
     list=dir->entryList(QStringList()<<"*.png"<<"*.jpg",QDir::Files);
     mrow=0;
     mcol=0;
+    ui->imgArea->resetItems();
     for(const QString& v:list){
         ClickableLabel *label=new ClickableLabel();
-        QFileInfo fi(v);
         QPixmap pix(dir->absoluteFilePath(v));
         label->setFixedSize(ui->imgArea->viewport()->width()/3,ui->imgArea->height()/3);
         label->setPixmap(pix.scaled(label->size(),Qt::KeepAspectRatio));
@@ -39,25 +38,6 @@ void Imager::chkFolder()
             mrow++;
         }
     }
-}
-
-void Imager::addLabel()
-{
-    /*
-    int row=ui->widget->rowCount();
-    for(int col=0;col<3;col++){
-        ClickableLabel *label=new ClickableLabel();
-        label->setText(QString("label %1 %2").arg(row).arg(col));
-        label->setFrameShape(QFrame::Box);
-        label->setAlignment(Qt::AlignCenter);
-        QColor color(qrand()%256,qrand()%256,qrand()%256);
-        label->setStyleSheet(QString("QLabel { background-color : %1;}").arg(color.name()));
-        ui->widget->addWidget(label,row,col);
-        label->ro=row;
-        label->co=col;
-        connect(label,SIGNAL(nclicked(int,int)),this,SLOT(bugg(int,int)));
-    }
-    */
 }
 
 void Imager::bugg(int row,int col)

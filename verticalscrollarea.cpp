@@ -12,6 +12,7 @@ VerticalScrollArea::VerticalScrollArea(QWidget *parent)
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     grid->setMargin(0);
     grid->setSpacing(0);
+    grid->setAlignment(Qt::AlignTop);
 }
 
 void VerticalScrollArea::addWidget(QWidget *w, int row, int col)
@@ -24,6 +25,14 @@ int VerticalScrollArea::rowCount()
 {
     if(grid->count()==0) return 0;
     return grid->rowCount();
+}
+
+void VerticalScrollArea::resetItems()
+{
+    QLayoutItem *child;
+    while((child=grid->takeAt(0))!=nullptr){
+        delete child->widget();
+    }
 }
 
 void VerticalScrollArea::adaptSize()

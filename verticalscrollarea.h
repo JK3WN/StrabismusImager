@@ -16,6 +16,7 @@ public:
     VerticalScrollArea(QWidget *parent=Q_NULLPTR);
     void addWidget(QWidget *w,int row,int col);
     int rowCount();
+    void resetItems();
 
 private:
     void adaptSize();

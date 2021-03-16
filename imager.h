@@ -21,7 +21,6 @@ public:
 
 private slots:
     void chkFolder();
-    void addLabel();
     void bugg(int row,int col);
     void resetImg();
 
