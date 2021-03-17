@@ -202,7 +202,7 @@ void Imager::save()
     if(capt[7]) painter.drawPixmap(resSize.width(),resSize.height()*2,resSize.width(),resSize.height(),resimg[7],0,0,resimg[7].width(),resimg[7].height());
     if(capt[8]) painter.drawPixmap(resSize.width()*2,resSize.height()*2,resSize.width(),resSize.height(),resimg[8],0,0,resimg[8].width(),resimg[8].height());
     painter.end();
-    imgFile.setFileName("Result.png");
+    imgFile.setFileName("NineCardinal.png");
     imgFile.open(QIODevice::WriteOnly);
     print.save(&imgFile,"PNG");
     imgFile.close();
