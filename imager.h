@@ -6,6 +6,8 @@
 #include <QFileDialog>
 #include <QRubberBand>
 #include <QDebug>
+#include <QStyle>
+#include <QPainter>
 #include "clickablelabel.h"
 
 QT_BEGIN_NAMESPACE
@@ -35,13 +37,18 @@ private slots:
     void res7Clicked();
     void res8Clicked();
     void res9Clicked();
+    void save();
 
 private:
     Ui::Imager *ui;
     QDir *dir;
     QStringList list;
     QPixmap defimg,selimg,resimg[9];
-    int mrow=0,mcol=0;
+    int mrow=0,mcol=0,max=0;
+    bool capt[9]={false};
     ClickableLabel *prev;
+    QSize resSize;
+    QPainter painter;
+    QFile imgFile;
 };
 #endif // IMAGER_H
