@@ -30,7 +30,7 @@
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
-   <widget class="QLabel" name="resLabel1">
+   <widget class="ClickableLabel" name="resLabel1">
     <property name="geometry">
      <rect>
       <x>980</x>
@@ -46,7 +46,7 @@
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
-   <widget class="QLabel" name="resLabel2">
+   <widget class="ClickableLabel" name="resLabel2">
     <property name="geometry">
      <rect>
       <x>1220</x>
@@ -62,7 +62,7 @@
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
-   <widget class="QLabel" name="resLabel3">
+   <widget class="ClickableLabel" name="resLabel3">
     <property name="geometry">
      <rect>
       <x>1460</x>
@@ -78,7 +78,7 @@
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
-   <widget class="QLabel" name="resLabel5">
+   <widget class="ClickableLabel" name="resLabel5">
     <property name="geometry">
      <rect>
       <x>1220</x>
@@ -94,7 +94,7 @@
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
-   <widget class="QLabel" name="resLabel6">
+   <widget class="ClickableLabel" name="resLabel6">
     <property name="geometry">
      <rect>
       <x>1460</x>
@@ -110,7 +110,7 @@
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
-   <widget class="QLabel" name="resLabel4">
+   <widget class="ClickableLabel" name="resLabel4">
     <property name="geometry">
      <rect>
       <x>980</x>
@@ -126,7 +126,7 @@
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
-   <widget class="QLabel" name="resLabel8">
+   <widget class="ClickableLabel" name="resLabel8">
     <property name="geometry">
      <rect>
       <x>1220</x>
@@ -142,7 +142,7 @@
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
-   <widget class="QLabel" name="resLabel9">
+   <widget class="ClickableLabel" name="resLabel9">
     <property name="geometry">
      <rect>
       <x>1460</x>
@@ -158,7 +158,7 @@
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
-   <widget class="QLabel" name="resLabel7">
+   <widget class="ClickableLabel" name="resLabel7">
     <property name="geometry">
      <rect>
       <x>980</x>

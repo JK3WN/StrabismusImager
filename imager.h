@@ -26,12 +26,21 @@ private slots:
     void resetImg();
     void closeBig();
     void selection(ClickableLabel *label);
+    void res1Clicked();
+    void res2Clicked();
+    void res3Clicked();
+    void res4Clicked();
+    void res5Clicked();
+    void res6Clicked();
+    void res7Clicked();
+    void res8Clicked();
+    void res9Clicked();
 
 private:
     Ui::Imager *ui;
     QDir *dir;
     QStringList list;
-    QPixmap defimg,selimg;
+    QPixmap defimg,selimg,resimg[9];
     int mrow=0,mcol=0;
     ClickableLabel *prev;
 };
