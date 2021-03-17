@@ -12,16 +12,18 @@ public:
     explicit ClickableLabel(QWidget *parent=Q_NULLPTR,Qt::WindowFlags f=Qt::WindowFlags());
     ~ClickableLabel();
     int ro=-1,co=-1;
+    QPixmap orig;
+    QPixmap sendPixmap();
 
 signals:
     void clicked();
-    void nclicked(int ro,int co);
+    void nclicked(ClickableLabel *label);
     void doubleClicked();
-    void ndoubleClicked(int ro,int co);
+    void ndoubleClicked(ClickableLabel *label);
 
 protected:
     void mousePressEvent(QMouseEvent *event);
-    void mouseDoubleClickEvent(QMouseEvent *event);
+    void mouseDoubleClickEvent(QMouseEvent *event); 
 };
 
 #endif // CLICKABLELABEL_H

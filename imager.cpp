@@ -7,6 +7,7 @@ Imager::Imager(QWidget *parent)
 {
     ui->setupUi(this);
     connect(ui->actionSelect_Folder,SIGNAL(triggered()),this,SLOT(chkFolder()));
+    connect(ui->bigLabel,SIGNAL(doubleClicked()),this,SLOT(closeBig()));
     resetImg();
 }
 
@@ -28,10 +29,14 @@ void Imager::chkFolder()
         label->setFixedSize(ui->imgArea->viewport()->width()/3,ui->imgArea->height()/3);
         label->setPixmap(pix.scaled(label->size(),Qt::KeepAspectRatio));
         label->setAlignment(Qt::AlignCenter);
+        label->orig=pix;
         ui->imgArea->addWidget(label,mrow,mcol);
         label->ro=mrow;
         label->co=mcol;
-        connect(label,SIGNAL(nclicked(int,int)),this,SLOT(bugg(int,int)));
+        label->setLineWidth(3);
+        connect(label,SIGNAL(ndoubleClicked(ClickableLabel*)),this,SLOT(sendBig(ClickableLabel*)));
+        connect(label,SIGNAL(nclicked(ClickableLabel*)),this,SLOT(selection(ClickableLabel*)));
+        prev=label;
         mcol++;
         if(mcol>=3){
             mcol=mcol-3;
@@ -40,9 +45,10 @@ void Imager::chkFolder()
     }
 }
 
-void Imager::bugg(int row,int col)
+void Imager::sendBig(ClickableLabel *label)
 {
-    qDebug()<<row*3+col;
+    ui->bigLabel->setPixmap(label->orig.scaled(ui->bigLabel->size(),Qt::KeepAspectRatio));
+    ui->imgArea->setVisible(0);
 }
 
 void Imager::resetImg()
@@ -65,4 +71,17 @@ void Imager::resetImg()
     ui->resLabel8->setPixmap(defimg.scaled(ui->resLabel8->size(),Qt::KeepAspectRatio));
     defimg.load(":/image/arrow9.PNG");
     ui->resLabel9->setPixmap(defimg.scaled(ui->resLabel9->size(),Qt::KeepAspectRatio));
+}
+
+void Imager::closeBig()
+{
+    ui->imgArea->setVisible(1);
+}
+
+void Imager::selection(ClickableLabel *label)
+{
+    selimg=label->orig;
+    prev->setFrameStyle(QFrame::NoFrame);
+    label->setFrameStyle(QFrame::Panel|QFrame::Raised);
+    prev=label;
 }

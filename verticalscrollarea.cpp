@@ -33,6 +33,11 @@ void VerticalScrollArea::resetItems()
     while((child=grid->takeAt(0))!=nullptr){
         delete child->widget();
     }
+    delete grid;
+    grid=new QGridLayout(content);
+    grid->setMargin(0);
+    grid->setSpacing(0);
+    grid->setAlignment(Qt::AlignTop);
 }
 
 void VerticalScrollArea::adaptSize()
