@@ -8,10 +8,14 @@ Imager::Imager(QWidget *parent)
     ui->setupUi(this);
     resetImg();
     ui->saveBtn->setIcon(style()->standardIcon(QStyle::SP_DialogSaveButton));
+    ui->cutBtn->setIcon(style()->standardIcon(QStyle::SP_DialogApplyButton));
+    ui->cutBtn->setEnabled(0);
+    ui->bigLabel->type=2;
 
     connect(ui->actionSelect_Folder,SIGNAL(triggered()),this,SLOT(chkFolder()));
     connect(ui->bigLabel,SIGNAL(doubleClicked()),this,SLOT(closeBig()));
     connect(ui->saveBtn,SIGNAL(clicked()),this,SLOT(save()));
+    connect(ui->cutBtn,SIGNAL(clicked()),this,SLOT(setCoords()));
 
     connect(ui->resLabel1,SIGNAL(clicked()),this,SLOT(res1Clicked()));
     connect(ui->resLabel2,SIGNAL(clicked()),this,SLOT(res2Clicked()));
@@ -43,9 +47,11 @@ void Imager::chkFolder()
         label->setPixmap(pix.scaled(label->size(),Qt::KeepAspectRatio));
         label->setAlignment(Qt::AlignCenter);
         label->orig=pix;
+        resSize=pix.size();
         ui->imgArea->addWidget(label,mrow,mcol);
         label->ro=mrow;
         label->co=mcol;
+        label->type=1;
         label->setLineWidth(3);
         connect(label,SIGNAL(ndoubleClicked(ClickableLabel*)),this,SLOT(sendBig(ClickableLabel*)));
         connect(label,SIGNAL(nclicked(ClickableLabel*)),this,SLOT(selection(ClickableLabel*)));
@@ -61,12 +67,16 @@ void Imager::chkFolder()
 void Imager::sendBig(ClickableLabel *label)
 {
     ui->bigLabel->setPixmap(label->orig.scaled(ui->bigLabel->size(),Qt::KeepAspectRatio));
+    ui->bigLabel->orig=label->orig.copy();
     ui->imgArea->setVisible(0);
+    ui->cutBtn->setEnabled(1);
+    if(coord) ui->bigLabel->rubberBand->setGeometry(QRect(stx*ui->bigLabel->width()/ui->bigLabel->orig.width(),sty*ui->bigLabel->height()/ui->bigLabel->orig.height(),(enx-stx)*ui->bigLabel->width()/ui->bigLabel->orig.width(),(eny-sty)*ui->bigLabel->height()/ui->bigLabel->orig.height()));
 }
 
 void Imager::resetImg()
 {
     memset(capt,false,sizeof(capt));
+    coord=false;
     defimg.load(":/image/arrow1.PNG");
     ui->resLabel1->setPixmap(defimg.scaled(ui->resLabel1->size(),Qt::KeepAspectRatio));
     defimg.load(":/image/arrow2.PNG");
@@ -90,6 +100,7 @@ void Imager::resetImg()
 void Imager::closeBig()
 {
     ui->imgArea->setVisible(1);
+    ui->cutBtn->setEnabled(0);
 }
 
 void Imager::selection(ClickableLabel *label)
@@ -104,81 +115,81 @@ void Imager::res1Clicked()
 {
     if(selimg.isNull()) return;
     capt[0]=true;
-    resimg[0]=selimg.copy();
-    resSize=selimg.size();
-    ui->resLabel1->setPixmap(selimg.scaled(ui->resLabel1->size(),Qt::KeepAspectRatio));
+    if(!coord) resimg[0]=selimg.copy();
+    else resimg[0]=selimg.copy(stx,sty,enx-stx,eny-sty);
+    ui->resLabel1->setPixmap(resimg[0].scaled(ui->resLabel1->size(),Qt::KeepAspectRatio));
 }
 
 void Imager::res2Clicked()
 {
     if(selimg.isNull()) return;
     capt[1]=true;
-    resimg[1]=selimg.copy();
-    resSize=selimg.size();
-    ui->resLabel2->setPixmap(selimg.scaled(ui->resLabel2->size(),Qt::KeepAspectRatio));
+    if(!coord) resimg[1]=selimg.copy();
+    else resimg[1]=selimg.copy(stx,sty,enx-stx,eny-sty);
+    ui->resLabel2->setPixmap(resimg[1].scaled(ui->resLabel2->size(),Qt::KeepAspectRatio));
 }
 
 void Imager::res3Clicked()
 {
     if(selimg.isNull()) return;
     capt[2]=true;
-    resimg[2]=selimg.copy();
-    resSize=selimg.size();
-    ui->resLabel3->setPixmap(selimg.scaled(ui->resLabel3->size(),Qt::KeepAspectRatio));
+    if(!coord) resimg[2]=selimg.copy();
+    else resimg[2]=selimg.copy(stx,sty,enx-stx,eny-sty);
+    ui->resLabel3->setPixmap(resimg[2].scaled(ui->resLabel3->size(),Qt::KeepAspectRatio));
 }
 
 void Imager::res4Clicked()
 {
     if(selimg.isNull()) return;
     capt[3]=true;
-    resimg[3]=selimg.copy();
-    resSize=selimg.size();
-    ui->resLabel4->setPixmap(selimg.scaled(ui->resLabel4->size(),Qt::KeepAspectRatio));
+    if(!coord) resimg[3]=selimg.copy();
+    else resimg[3]=selimg.copy(stx,sty,enx-stx,eny-sty);
+    ui->resLabel4->setPixmap(resimg[3].scaled(ui->resLabel4->size(),Qt::KeepAspectRatio));
 }
 
 void Imager::res5Clicked()
 {
     if(selimg.isNull()) return;
     capt[4]=true;
-    resimg[4]=selimg.copy();
-    resSize=selimg.size();
-    ui->resLabel5->setPixmap(selimg.scaled(ui->resLabel5->size(),Qt::KeepAspectRatio));
+    if(!coord) resimg[4]=selimg.copy();
+    else resimg[4]=selimg.copy(stx,sty,enx-stx,eny-sty);
+    ui->resLabel5->setPixmap(resimg[4].scaled(ui->resLabel5->size(),Qt::KeepAspectRatio));
 }
 
 void Imager::res6Clicked()
 {
     if(selimg.isNull()) return;
     capt[5]=true;
-    resimg[5]=selimg.copy();
-    resSize=selimg.size();
-    ui->resLabel6->setPixmap(selimg.scaled(ui->resLabel6->size(),Qt::KeepAspectRatio));
+    if(!coord) resimg[5]=selimg.copy();
+    else resimg[5]=selimg.copy(stx,sty,enx-stx,eny-sty);
+    ui->resLabel6->setPixmap(resimg[5].scaled(ui->resLabel6->size(),Qt::KeepAspectRatio));
 }
 
 void Imager::res7Clicked()
 {
     if(selimg.isNull()) return;
     capt[6]=true;
-    resimg[6]=selimg.copy();
-    resSize=selimg.size();
-    ui->resLabel7->setPixmap(selimg.scaled(ui->resLabel7->size(),Qt::KeepAspectRatio));
+    if(!coord) resimg[6]=selimg.copy();
+    else resimg[6]=selimg.copy(stx,sty,enx-stx,eny-sty);
+    ui->resLabel7->setPixmap(resimg[6].scaled(ui->resLabel7->size(),Qt::KeepAspectRatio));
 }
 
 void Imager::res8Clicked()
 {
     if(selimg.isNull()) return;
     capt[7]=true;
-    resimg[7]=selimg.copy();
-    resSize=selimg.size();
-    ui->resLabel8->setPixmap(selimg.scaled(ui->resLabel8->size(),Qt::KeepAspectRatio));
+    if(!coord) resimg[7]=selimg.copy();
+    else resimg[7]=selimg.copy(stx,sty,enx-stx,eny-sty);
+    ui->resLabel8->setPixmap(resimg[7].scaled(ui->resLabel8->size(),Qt::KeepAspectRatio));
 }
 
 void Imager::res9Clicked()
 {
     if(selimg.isNull()) return;
     capt[8]=true;
-    resimg[8]=selimg.copy();
-    resSize=selimg.size();
-    ui->resLabel9->setPixmap(selimg.scaled(ui->resLabel9->size(),Qt::KeepAspectRatio));
+    if(!coord) resimg[8]=selimg.copy();
+    else resimg[8]=selimg.copy(stx,sty,enx-stx,eny-sty);
+    ui->resLabel9->setPixmap(resimg[8].scaled(ui->resLabel9->size(),Qt::KeepAspectRatio));
 }
 
 void Imager::save()
@@ -206,4 +217,15 @@ void Imager::save()
     imgFile.open(QIODevice::WriteOnly);
     print.save(&imgFile,"PNG");
     imgFile.close();
+}
+
+void Imager::setCoords()
+{
+    stx=ui->bigLabel->start.x()*ui->bigLabel->orig.width()/ui->bigLabel->pixmap(Qt::ReturnByValue).width();
+    sty=ui->bigLabel->start.y()*ui->bigLabel->orig.height()/ui->bigLabel->pixmap(Qt::ReturnByValue).height();
+    enx=ui->bigLabel->end.x()*ui->bigLabel->orig.width()/ui->bigLabel->pixmap(Qt::ReturnByValue).width();
+    eny=ui->bigLabel->end.y()*ui->bigLabel->orig.height()/ui->bigLabel->pixmap(Qt::ReturnByValue).height();
+    resSize=QSize(enx-stx,eny-sty);
+    resetImg();
+    coord=true;
 }

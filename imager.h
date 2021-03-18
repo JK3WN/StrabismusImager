@@ -38,14 +38,15 @@ private slots:
     void res8Clicked();
     void res9Clicked();
     void save();
+    void setCoords();
 
 private:
     Ui::Imager *ui;
     QDir *dir;
     QStringList list;
     QPixmap defimg,selimg,resimg[9];
-    int mrow=0,mcol=0,max=0;
-    bool capt[9]={false};
+    int mrow=0,mcol=0,max=0,stx=0,sty=0,enx=0,eny=0;
+    bool capt[9]={false},coord=false;
     ClickableLabel *prev;
     QSize resSize;
     QPainter painter;

@@ -3,6 +3,9 @@
 
 #include <QLabel>
 #include <QWidget>
+#include <QRubberBand>
+#include <QMouseEvent>
+#include <QDebug>
 
 class ClickableLabel : public QLabel
 {
@@ -11,8 +14,10 @@ class ClickableLabel : public QLabel
 public:
     explicit ClickableLabel(QWidget *parent=Q_NULLPTR,Qt::WindowFlags f=Qt::WindowFlags());
     ~ClickableLabel();
-    int ro=-1,co=-1;
+    int ro=-1,co=-1,type=0;
     QPixmap orig;
+    QRubberBand *rubberBand;
+    QPoint start,end;
     QPixmap sendPixmap();
 
 signals:
@@ -20,10 +25,13 @@ signals:
     void nclicked(ClickableLabel *label);
     void doubleClicked();
     void ndoubleClicked(ClickableLabel *label);
+    void sendCoords(int sx,int sy,int ex,int ey);
 
 protected:
     void mousePressEvent(QMouseEvent *event);
-    void mouseDoubleClickEvent(QMouseEvent *event); 
+    void mouseMoveEvent(QMouseEvent *event);
+    void mouseReleaseEvent(QMouseEvent *event);
+    void mouseDoubleClickEvent(QMouseEvent *event);
 };
 
 #endif // CLICKABLELABEL_H
