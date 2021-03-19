@@ -22,8 +22,11 @@ public:
     Imager(QWidget *parent = nullptr);
     ~Imager();
 
-private slots:
+public slots:
     void chkFolder();
+
+private slots:
+    //void chkFolder();
     void sendBig(ClickableLabel *label);
     void resetImg();
     void closeBig();

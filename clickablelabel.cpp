@@ -13,7 +13,9 @@ ClickableLabel::~ClickableLabel()
 void ClickableLabel::mousePressEvent(QMouseEvent *event)
 {
     if(type==0) emit clicked();
-    else if(type==1) emit nclicked(this);
+    else if(type==1){
+        emit nclicked(this);
+    }
     else{
         start=event->pos();
         if(!rubberBand) rubberBand=new QRubberBand(QRubberBand::Rectangle,this);
@@ -53,7 +55,6 @@ void ClickableLabel::mouseReleaseEvent(QMouseEvent *event)
             start.setY(end.y());
             end.setY(temp);
         }
-        emit sendCoords(start.x()*orig.width()/pixmap(Qt::ReturnByValue).width(),start.y()*orig.height()/pixmap(Qt::ReturnByValue).height(),end.x()*orig.width()/pixmap(Qt::ReturnByValue).width(),end.y()*orig.height()/pixmap(Qt::ReturnByValue).height());
     }
 }
 

@@ -9,11 +9,12 @@ Imager::Imager(QWidget *parent)
     resetImg();
     ui->saveBtn->setIcon(style()->standardIcon(QStyle::SP_DialogSaveButton));
     ui->cutBtn->setIcon(style()->standardIcon(QStyle::SP_DialogApplyButton));
+    ui->backBtn->setIcon(style()->standardIcon(QStyle::SP_FileDialogBack));
     ui->cutBtn->setEnabled(0);
     ui->bigLabel->type=2;
 
     connect(ui->actionSelect_Folder,SIGNAL(triggered()),this,SLOT(chkFolder()));
-    connect(ui->bigLabel,SIGNAL(doubleClicked()),this,SLOT(closeBig()));
+    connect(ui->backBtn,SIGNAL(clicked()),this,SLOT(closeBig()));
     connect(ui->saveBtn,SIGNAL(clicked()),this,SLOT(save()));
     connect(ui->cutBtn,SIGNAL(clicked()),this,SLOT(setCoords()));
 
@@ -36,7 +37,7 @@ Imager::~Imager()
 void Imager::chkFolder()
 {
     dir=new QDir(QFileDialog::getExistingDirectory(this,"Select Folder"));
-    list=dir->entryList(QStringList()<<"*.png"<<"*.jpg",QDir::Files);
+    list=dir->entryList(QStringList()<<"*.png"<<"*.jpg"<<"*.bmp",QDir::Files);
     mrow=0;
     mcol=0;
     ui->imgArea->resetItems();
