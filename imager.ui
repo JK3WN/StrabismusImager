@@ -193,6 +193,9 @@
       <height>41</height>
      </rect>
     </property>
+    <property name="toolTip">
+     <string>Save</string>
+    </property>
     <property name="text">
      <string>...</string>
     </property>
@@ -210,6 +213,22 @@
      <string>Back</string>
     </property>
    </widget>
+   <widget class="QToolButton" name="resetBtn">
+    <property name="geometry">
+     <rect>
+      <x>1020</x>
+      <y>410</y>
+      <width>41</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>Reset Selection</string>
+    </property>
+    <property name="text">
+     <string>...</string>
+    </property>
+   </widget>
    <zorder>resLabel1</zorder>
    <zorder>resLabel2</zorder>
    <zorder>resLabel3</zorder>
@@ -223,6 +242,7 @@
    <zorder>bigLabel</zorder>
    <zorder>backBtn</zorder>
    <zorder>imgArea</zorder>
+   <zorder>resetBtn</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

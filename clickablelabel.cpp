@@ -3,7 +3,6 @@
 ClickableLabel::ClickableLabel(QWidget *parent,Qt::WindowFlags f)
     : QLabel(parent)
 {
-    rubberBand=new QRubberBand(QRubberBand::Rectangle,this);
 }
 
 ClickableLabel::~ClickableLabel()
@@ -23,11 +22,6 @@ void ClickableLabel::mousePressEvent(QMouseEvent *event)
         painter.fillRect(0,0,small.width(),small.height(),QColor(0,0,0,100));
         painter.end();
         setPixmap(small);
-        /*
-        if(!rubberBand) rubberBand=new QRubberBand(QRubberBand::Rectangle,this);
-        rubberBand->setGeometry(QRect(start,QSize()));
-        rubberBand->show();
-        */
     }
 }
 
@@ -72,7 +66,6 @@ void ClickableLabel::mouseMoveEvent(QMouseEvent *event)
         }
         painter.end();
         setPixmap(small);
-        //rubberBand->setGeometry(QRect(start,end).normalized());
     }
 }
 
@@ -84,7 +77,6 @@ void ClickableLabel::mouseReleaseEvent(QMouseEvent *event)
         if(end.y()<0) end.setY(0);
         if(end.x()>=this->width()) end.setX(this->width()-1);
         if(end.y()>=this->height()) end.setY(this->height()-1);
-        //rubberBand->setGeometry(QRect(start,end).normalized());
         if(start.x()>end.x()){
             int temp=start.x();
             start.setX(end.x());
@@ -96,6 +88,7 @@ void ClickableLabel::mouseReleaseEvent(QMouseEvent *event)
             end.setY(temp);
         }
         emit dragEnd();
+        bigRect=QRect(start,end);
     }
 }
 
@@ -120,4 +113,9 @@ void ClickableLabel::filtered(int sx,int sy,int ex,int ey)
     painter.fillRect(sx,ey,ex-sx,small.height()-ey,QColor(0,0,0,100));
     painter.end();
     setPixmap(small);
+}
+
+void ClickableLabel::resetFilter()
+{
+    setPixmap(orig.copy().scaled(width(),height(),Qt::KeepAspectRatio));
 }

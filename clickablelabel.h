@@ -3,7 +3,6 @@
 
 #include <QLabel>
 #include <QWidget>
-#include <QRubberBand>
 #include <QMouseEvent>
 #include <QDebug>
 #include <QPainter>
@@ -19,8 +18,8 @@ public:
     bool drag=false;
     QPixmap orig,small;
     QPainter painter;
-    QRubberBand *rubberBand;
-    QPoint start,end,dragStart,startTL;
+    QPoint start,end,dragStart;
+    QRect bigRect,origRect;
     QPixmap sendPixmap();
 
 signals:
@@ -33,6 +32,7 @@ signals:
 
 public slots:
     void filtered(int sx,int sy,int ex,int ey);
+    void resetFilter();
 
 protected:
     void mousePressEvent(QMouseEvent *event);

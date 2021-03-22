@@ -44,6 +44,7 @@ private slots:
 
 signals:
     void filterAll(int sx,int sy,int ex,int ey);
+    void resetAll();
 
 private:
     Ui::Imager *ui;

@@ -9,11 +9,14 @@ Imager::Imager(QWidget *parent)
     resetImg();
     ui->saveBtn->setIcon(style()->standardIcon(QStyle::SP_DialogSaveButton));
     ui->backBtn->setIcon(style()->standardIcon(QStyle::SP_FileDialogBack));
+    ui->resetBtn->setIcon(style()->standardIcon(QStyle::SP_BrowserReload));
+    ui->resetBtn->setEnabled(0);
     ui->bigLabel->type=2;
 
     connect(ui->actionSelect_Folder,SIGNAL(triggered()),this,SLOT(chkFolder()));
     connect(ui->backBtn,SIGNAL(clicked()),this,SLOT(closeBig()));
     connect(ui->saveBtn,SIGNAL(clicked()),this,SLOT(save()));
+    connect(ui->resetBtn,SIGNAL(clicked()),this,SLOT(resetImg()));
     connect(ui->bigLabel,SIGNAL(dragEnd()),this,SLOT(setCoords()));
 
     connect(ui->resLabel1,SIGNAL(clicked()),this,SLOT(res1Clicked()));
@@ -34,11 +37,12 @@ Imager::~Imager()
 
 void Imager::chkFolder()
 {
-    dir=new QDir(QFileDialog::getExistingDirectory(this,"Select Folder"));
+    dir=new QDir(QFileDialog::getExistingDirectory(this,"Select Folder",QDir::homePath()+"/Desktop"));
     list=dir->entryList(QStringList()<<"*.png"<<"*.jpg"<<"*.bmp",QDir::Files);
     mrow=0;
     mcol=0;
     ui->imgArea->resetItems();
+    resetImg();
     for(const QString& v:list){
         ClickableLabel *label=new ClickableLabel();
         QPixmap pix(dir->absoluteFilePath(v));
@@ -55,6 +59,7 @@ void Imager::chkFolder()
         connect(label,SIGNAL(ndoubleClicked(ClickableLabel*)),this,SLOT(sendBig(ClickableLabel*)));
         connect(label,SIGNAL(nclicked(ClickableLabel*)),this,SLOT(selection(ClickableLabel*)));
         connect(this,SIGNAL(filterAll(int,int,int,int)),label,SLOT(filtered(int,int,int,int)));
+        connect(this,SIGNAL(resetAll()),label,SLOT(resetFilter()));
         prev=label;
         mcol++;
         if(mcol>=3){
@@ -89,6 +94,7 @@ void Imager::resetImg()
 {
     memset(capt,false,sizeof(capt));
     coord=false;
+    ui->resetBtn->setEnabled(0);
     defimg.load(":/image/arrow1.PNG");
     ui->resLabel1->setPixmap(defimg.scaled(ui->resLabel1->size(),Qt::KeepAspectRatio));
     defimg.load(":/image/arrow2.PNG");
@@ -107,6 +113,7 @@ void Imager::resetImg()
     ui->resLabel8->setPixmap(defimg.scaled(ui->resLabel8->size(),Qt::KeepAspectRatio));
     defimg.load(":/image/arrow9.PNG");
     ui->resLabel9->setPixmap(defimg.scaled(ui->resLabel9->size(),Qt::KeepAspectRatio));
+    resetAll();
 }
 
 void Imager::closeBig()
@@ -232,12 +239,13 @@ void Imager::save()
 
 void Imager::setCoords()
 {
+    resetImg();
     stx=ui->bigLabel->start.x()*ui->bigLabel->orig.width()/ui->bigLabel->pixmap(Qt::ReturnByValue).width();
     sty=ui->bigLabel->start.y()*ui->bigLabel->orig.height()/ui->bigLabel->pixmap(Qt::ReturnByValue).height();
     enx=ui->bigLabel->end.x()*ui->bigLabel->orig.width()/ui->bigLabel->pixmap(Qt::ReturnByValue).width();
     eny=ui->bigLabel->end.y()*ui->bigLabel->orig.height()/ui->bigLabel->pixmap(Qt::ReturnByValue).height();
     resSize=QSize(enx-stx,eny-sty);
     filterAll(stx*ui->imgArea->grid->itemAt(0)->geometry().width()/ui->bigLabel->orig.width(),sty*ui->imgArea->grid->itemAt(0)->geometry().height()/ui->bigLabel->orig.height(),enx*ui->imgArea->grid->itemAt(0)->geometry().width()/ui->bigLabel->orig.width(),eny*ui->imgArea->grid->itemAt(0)->geometry().height()/ui->bigLabel->orig.height());
-    resetImg();
     coord=true;
+    ui->resetBtn->setEnabled(1);
 }
