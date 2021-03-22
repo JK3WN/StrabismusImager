@@ -8,15 +8,13 @@ Imager::Imager(QWidget *parent)
     ui->setupUi(this);
     resetImg();
     ui->saveBtn->setIcon(style()->standardIcon(QStyle::SP_DialogSaveButton));
-    ui->cutBtn->setIcon(style()->standardIcon(QStyle::SP_DialogApplyButton));
     ui->backBtn->setIcon(style()->standardIcon(QStyle::SP_FileDialogBack));
-    ui->cutBtn->setEnabled(0);
     ui->bigLabel->type=2;
 
     connect(ui->actionSelect_Folder,SIGNAL(triggered()),this,SLOT(chkFolder()));
     connect(ui->backBtn,SIGNAL(clicked()),this,SLOT(closeBig()));
     connect(ui->saveBtn,SIGNAL(clicked()),this,SLOT(save()));
-    connect(ui->cutBtn,SIGNAL(clicked()),this,SLOT(setCoords()));
+    connect(ui->bigLabel,SIGNAL(dragEnd()),this,SLOT(setCoords()));
 
     connect(ui->resLabel1,SIGNAL(clicked()),this,SLOT(res1Clicked()));
     connect(ui->resLabel2,SIGNAL(clicked()),this,SLOT(res2Clicked()));
@@ -67,11 +65,23 @@ void Imager::chkFolder()
 
 void Imager::sendBig(ClickableLabel *label)
 {
-    ui->bigLabel->setPixmap(label->orig.scaled(ui->bigLabel->size(),Qt::KeepAspectRatio));
+    if(!coord) ui->bigLabel->setPixmap(label->orig.scaled(ui->bigLabel->size(),Qt::KeepAspectRatio));
+    else{
+        QPixmap temp=label->orig.copy().scaled(ui->bigLabel->size(),Qt::KeepAspectRatio);
+        int sx=stx*ui->bigLabel->pixmap(Qt::ReturnByValue).width()/ui->bigLabel->orig.width();
+        int sy=sty*ui->bigLabel->pixmap(Qt::ReturnByValue).height()/ui->bigLabel->orig.height();
+        int ex=enx*ui->bigLabel->pixmap(Qt::ReturnByValue).width()/ui->bigLabel->orig.width();
+        int ey=eny*ui->bigLabel->pixmap(Qt::ReturnByValue).height()/ui->bigLabel->orig.height();
+        painter.begin(&temp);
+        painter.fillRect(0,0,sx,temp.height(),QColor(0,0,0,100));
+        painter.fillRect(ex,0,temp.width()-ex,temp.height(),QColor(0,0,0,100));
+        painter.fillRect(sx,0,ex-sx,sy,QColor(0,0,0,100));
+        painter.fillRect(sx,ey,ex-sx,temp.height()-ey,QColor(0,0,0,100));
+        painter.end();
+        ui->bigLabel->setPixmap(temp);
+    }
     ui->bigLabel->orig=label->orig.copy();
     ui->imgArea->setVisible(0);
-    ui->cutBtn->setEnabled(1);
-    if(coord) ui->bigLabel->rubberBand->setGeometry(QRect(stx*ui->bigLabel->width()/ui->bigLabel->orig.width(),sty*ui->bigLabel->height()/ui->bigLabel->orig.height(),(enx-stx)*ui->bigLabel->width()/ui->bigLabel->orig.width(),(eny-sty)*ui->bigLabel->height()/ui->bigLabel->orig.height()));
 }
 
 void Imager::resetImg()
@@ -101,7 +111,6 @@ void Imager::resetImg()
 void Imager::closeBig()
 {
     ui->imgArea->setVisible(1);
-    ui->cutBtn->setEnabled(0);
 }
 
 void Imager::selection(ClickableLabel *label)

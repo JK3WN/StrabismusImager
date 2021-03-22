@@ -6,6 +6,7 @@
 #include <QRubberBand>
 #include <QMouseEvent>
 #include <QDebug>
+#include <QPainter>
 
 class ClickableLabel : public QLabel
 {
@@ -16,7 +17,8 @@ public:
     ~ClickableLabel();
     int ro=-1,co=-1,type=0;
     bool drag=false;
-    QPixmap orig;
+    QPixmap orig,small;
+    QPainter painter;
     QRubberBand *rubberBand;
     QPoint start,end,dragStart,startTL;
     QPixmap sendPixmap();
@@ -27,6 +29,7 @@ signals:
     void doubleClicked();
     void ndoubleClicked(ClickableLabel *label);
     void sendCoords(int sx,int sy,int ex,int ey);
+    void dragEnd();
 
 protected:
     void mousePressEvent(QMouseEvent *event);

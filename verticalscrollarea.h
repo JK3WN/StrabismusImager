@@ -8,9 +8,11 @@
 
 class VerticalScrollArea : public QScrollArea
 {
+public:
     QWidget *content;
     QGridLayout *grid;
     int nRows=3,nColumns=3;
+    QPixmap small;
 
 public:
     VerticalScrollArea(QWidget *parent=Q_NULLPTR);
