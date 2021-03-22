@@ -26,7 +26,6 @@ public slots:
     void chkFolder();
 
 private slots:
-    //void chkFolder();
     void sendBig(ClickableLabel *label);
     void resetImg();
     void closeBig();
@@ -42,6 +41,9 @@ private slots:
     void res9Clicked();
     void save();
     void setCoords();
+
+signals:
+    void filterAll(int sx,int sy,int ex,int ey);
 
 private:
     Ui::Imager *ui;

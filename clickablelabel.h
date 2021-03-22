@@ -31,6 +31,9 @@ signals:
     void sendCoords(int sx,int sy,int ex,int ey);
     void dragEnd();
 
+public slots:
+    void filtered(int sx,int sy,int ex,int ey);
+
 protected:
     void mousePressEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);

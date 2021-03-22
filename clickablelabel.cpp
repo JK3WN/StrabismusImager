@@ -109,3 +109,15 @@ QPixmap ClickableLabel::sendPixmap()
 {
     return pixmap(Qt::ReturnByValue);
 }
+
+void ClickableLabel::filtered(int sx,int sy,int ex,int ey)
+{
+    small=orig.copy().scaled(width(),height(),Qt::KeepAspectRatio);
+    painter.begin(&small);
+    painter.fillRect(0,0,sx,small.height(),QColor(0,0,0,100));
+    painter.fillRect(ex,0,small.width()-ex,small.height(),QColor(0,0,0,100));
+    painter.fillRect(sx,0,ex-sx,sy,QColor(0,0,0,100));
+    painter.fillRect(sx,ey,ex-sx,small.height()-ey,QColor(0,0,0,100));
+    painter.end();
+    setPixmap(small);
+}

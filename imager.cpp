@@ -54,6 +54,7 @@ void Imager::chkFolder()
         label->setLineWidth(3);
         connect(label,SIGNAL(ndoubleClicked(ClickableLabel*)),this,SLOT(sendBig(ClickableLabel*)));
         connect(label,SIGNAL(nclicked(ClickableLabel*)),this,SLOT(selection(ClickableLabel*)));
+        connect(this,SIGNAL(filterAll(int,int,int,int)),label,SLOT(filtered(int,int,int,int)));
         prev=label;
         mcol++;
         if(mcol>=3){
@@ -236,6 +237,7 @@ void Imager::setCoords()
     enx=ui->bigLabel->end.x()*ui->bigLabel->orig.width()/ui->bigLabel->pixmap(Qt::ReturnByValue).width();
     eny=ui->bigLabel->end.y()*ui->bigLabel->orig.height()/ui->bigLabel->pixmap(Qt::ReturnByValue).height();
     resSize=QSize(enx-stx,eny-sty);
+    filterAll(stx*ui->imgArea->grid->itemAt(0)->geometry().width()/ui->bigLabel->orig.width(),sty*ui->imgArea->grid->itemAt(0)->geometry().height()/ui->bigLabel->orig.height(),enx*ui->imgArea->grid->itemAt(0)->geometry().width()/ui->bigLabel->orig.width(),eny*ui->imgArea->grid->itemAt(0)->geometry().height()/ui->bigLabel->orig.height());
     resetImg();
     coord=true;
 }

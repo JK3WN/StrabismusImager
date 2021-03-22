@@ -5,6 +5,7 @@
 #include <QScrollArea>
 #include <QScrollBar>
 #include <QResizeEvent>
+#include "clickablelabel.h"
 
 class VerticalScrollArea : public QScrollArea
 {
