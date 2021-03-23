@@ -19,7 +19,7 @@ public:
     QPixmap orig,small;
     QPainter painter;
     QPoint start,end,dragStart;
-    QRect bigRect,origRect;
+    QRect origRect,bigRect,smallRect;
     QPixmap sendPixmap();
 
 signals:
@@ -31,7 +31,7 @@ signals:
     void dragEnd();
 
 public slots:
-    void filtered(int sx,int sy,int ex,int ey);
+    void filtered(int sx,int sy,int ex,int ey,int bw,int bh);
     void resetFilter();
 
 protected:

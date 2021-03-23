@@ -18,6 +18,7 @@ Imager::Imager(QWidget *parent)
     connect(ui->saveBtn,SIGNAL(clicked()),this,SLOT(save()));
     connect(ui->resetBtn,SIGNAL(clicked()),this,SLOT(resetImg()));
     connect(ui->bigLabel,SIGNAL(dragEnd()),this,SLOT(setCoords()));
+    connect(this,SIGNAL(resetAll()),ui->bigLabel,SLOT(resetFilter()));
 
     connect(ui->resLabel1,SIGNAL(clicked()),this,SLOT(res1Clicked()));
     connect(ui->resLabel2,SIGNAL(clicked()),this,SLOT(res2Clicked()));
@@ -58,7 +59,7 @@ void Imager::chkFolder()
         label->setLineWidth(3);
         connect(label,SIGNAL(ndoubleClicked(ClickableLabel*)),this,SLOT(sendBig(ClickableLabel*)));
         connect(label,SIGNAL(nclicked(ClickableLabel*)),this,SLOT(selection(ClickableLabel*)));
-        connect(this,SIGNAL(filterAll(int,int,int,int)),label,SLOT(filtered(int,int,int,int)));
+        connect(this,SIGNAL(filterAll(int,int,int,int,int,int)),label,SLOT(filtered(int,int,int,int,int,int)));
         connect(this,SIGNAL(resetAll()),label,SLOT(resetFilter()));
         prev=label;
         mcol++;
@@ -74,17 +75,14 @@ void Imager::sendBig(ClickableLabel *label)
     if(!coord) ui->bigLabel->setPixmap(label->orig.scaled(ui->bigLabel->size(),Qt::KeepAspectRatio));
     else{
         QPixmap temp=label->orig.copy().scaled(ui->bigLabel->size(),Qt::KeepAspectRatio);
-        int sx=stx*ui->bigLabel->pixmap(Qt::ReturnByValue).width()/ui->bigLabel->orig.width();
-        int sy=sty*ui->bigLabel->pixmap(Qt::ReturnByValue).height()/ui->bigLabel->orig.height();
-        int ex=enx*ui->bigLabel->pixmap(Qt::ReturnByValue).width()/ui->bigLabel->orig.width();
-        int ey=eny*ui->bigLabel->pixmap(Qt::ReturnByValue).height()/ui->bigLabel->orig.height();
         painter.begin(&temp);
-        painter.fillRect(0,0,sx,temp.height(),QColor(0,0,0,100));
-        painter.fillRect(ex,0,temp.width()-ex,temp.height(),QColor(0,0,0,100));
-        painter.fillRect(sx,0,ex-sx,sy,QColor(0,0,0,100));
-        painter.fillRect(sx,ey,ex-sx,temp.height()-ey,QColor(0,0,0,100));
+        painter.fillRect(0,0,label->bigRect.left(),temp.height(),QColor(0,0,0,100));
+        painter.fillRect(label->bigRect.right(),0,temp.width()-label->bigRect.right(),temp.height(),QColor(0,0,0,100));
+        painter.fillRect(label->bigRect.left(),0,label->bigRect.right()-label->bigRect.left(),label->bigRect.top(),QColor(0,0,0,100));
+        painter.fillRect(label->bigRect.left(),label->bigRect.bottom(),label->bigRect.right()-label->bigRect.left(),temp.height()-label->bigRect.bottom(),QColor(0,0,0,100));
         painter.end();
         ui->bigLabel->setPixmap(temp);
+        ui->bigLabel->bigRect=QRect(label->bigRect);
     }
     ui->bigLabel->orig=label->orig.copy();
     ui->imgArea->setVisible(0);
@@ -113,7 +111,7 @@ void Imager::resetImg()
     ui->resLabel8->setPixmap(defimg.scaled(ui->resLabel8->size(),Qt::KeepAspectRatio));
     defimg.load(":/image/arrow9.PNG");
     ui->resLabel9->setPixmap(defimg.scaled(ui->resLabel9->size(),Qt::KeepAspectRatio));
-    resetAll();
+    emit resetAll();
 }
 
 void Imager::closeBig()
@@ -124,6 +122,7 @@ void Imager::closeBig()
 void Imager::selection(ClickableLabel *label)
 {
     selimg=label->orig.copy();
+    selRect=QRect(label->origRect.x(),label->origRect.y(),label->origRect.width(),label->origRect.height());
     prev->setFrameStyle(QFrame::NoFrame);
     label->setFrameStyle(QFrame::Panel|QFrame::Raised);
     prev=label;
@@ -134,7 +133,7 @@ void Imager::res1Clicked()
     if(selimg.isNull()) return;
     capt[0]=true;
     if(!coord) resimg[0]=selimg.copy();
-    else resimg[0]=selimg.copy(stx,sty,enx-stx,eny-sty);
+    else resimg[0]=selimg.copy(selRect);
     ui->resLabel1->setPixmap(resimg[0].scaled(ui->resLabel1->size(),Qt::KeepAspectRatio));
 }
 
@@ -143,7 +142,7 @@ void Imager::res2Clicked()
     if(selimg.isNull()) return;
     capt[1]=true;
     if(!coord) resimg[1]=selimg.copy();
-    else resimg[1]=selimg.copy(stx,sty,enx-stx,eny-sty);
+    else resimg[1]=selimg.copy(selRect);
     ui->resLabel2->setPixmap(resimg[1].scaled(ui->resLabel2->size(),Qt::KeepAspectRatio));
 }
 
@@ -152,7 +151,7 @@ void Imager::res3Clicked()
     if(selimg.isNull()) return;
     capt[2]=true;
     if(!coord) resimg[2]=selimg.copy();
-    else resimg[2]=selimg.copy(stx,sty,enx-stx,eny-sty);
+    else resimg[2]=selimg.copy(selRect);
     ui->resLabel3->setPixmap(resimg[2].scaled(ui->resLabel3->size(),Qt::KeepAspectRatio));
 }
 
@@ -161,7 +160,7 @@ void Imager::res4Clicked()
     if(selimg.isNull()) return;
     capt[3]=true;
     if(!coord) resimg[3]=selimg.copy();
-    else resimg[3]=selimg.copy(stx,sty,enx-stx,eny-sty);
+    else resimg[3]=selimg.copy(selRect);
     ui->resLabel4->setPixmap(resimg[3].scaled(ui->resLabel4->size(),Qt::KeepAspectRatio));
 }
 
@@ -170,7 +169,7 @@ void Imager::res5Clicked()
     if(selimg.isNull()) return;
     capt[4]=true;
     if(!coord) resimg[4]=selimg.copy();
-    else resimg[4]=selimg.copy(stx,sty,enx-stx,eny-sty);
+    else resimg[4]=selimg.copy(selRect);
     ui->resLabel5->setPixmap(resimg[4].scaled(ui->resLabel5->size(),Qt::KeepAspectRatio));
 }
 
@@ -179,7 +178,7 @@ void Imager::res6Clicked()
     if(selimg.isNull()) return;
     capt[5]=true;
     if(!coord) resimg[5]=selimg.copy();
-    else resimg[5]=selimg.copy(stx,sty,enx-stx,eny-sty);
+    else resimg[5]=selimg.copy(selRect);
     ui->resLabel6->setPixmap(resimg[5].scaled(ui->resLabel6->size(),Qt::KeepAspectRatio));
 }
 
@@ -188,7 +187,7 @@ void Imager::res7Clicked()
     if(selimg.isNull()) return;
     capt[6]=true;
     if(!coord) resimg[6]=selimg.copy();
-    else resimg[6]=selimg.copy(stx,sty,enx-stx,eny-sty);
+    else resimg[6]=selimg.copy(selRect);
     ui->resLabel7->setPixmap(resimg[6].scaled(ui->resLabel7->size(),Qt::KeepAspectRatio));
 }
 
@@ -197,7 +196,7 @@ void Imager::res8Clicked()
     if(selimg.isNull()) return;
     capt[7]=true;
     if(!coord) resimg[7]=selimg.copy();
-    else resimg[7]=selimg.copy(stx,sty,enx-stx,eny-sty);
+    else resimg[7]=selimg.copy(selRect);
     ui->resLabel8->setPixmap(resimg[7].scaled(ui->resLabel8->size(),Qt::KeepAspectRatio));
 }
 
@@ -206,7 +205,7 @@ void Imager::res9Clicked()
     if(selimg.isNull()) return;
     capt[8]=true;
     if(!coord) resimg[8]=selimg.copy();
-    else resimg[8]=selimg.copy(stx,sty,enx-stx,eny-sty);
+    else resimg[8]=selimg.copy(selRect);
     ui->resLabel9->setPixmap(resimg[8].scaled(ui->resLabel9->size(),Qt::KeepAspectRatio));
 }
 
@@ -239,13 +238,29 @@ void Imager::save()
 
 void Imager::setCoords()
 {
-    resetImg();
-    stx=ui->bigLabel->start.x()*ui->bigLabel->orig.width()/ui->bigLabel->pixmap(Qt::ReturnByValue).width();
-    sty=ui->bigLabel->start.y()*ui->bigLabel->orig.height()/ui->bigLabel->pixmap(Qt::ReturnByValue).height();
-    enx=ui->bigLabel->end.x()*ui->bigLabel->orig.width()/ui->bigLabel->pixmap(Qt::ReturnByValue).width();
-    eny=ui->bigLabel->end.y()*ui->bigLabel->orig.height()/ui->bigLabel->pixmap(Qt::ReturnByValue).height();
-    resSize=QSize(enx-stx,eny-sty);
-    filterAll(stx*ui->imgArea->grid->itemAt(0)->geometry().width()/ui->bigLabel->orig.width(),sty*ui->imgArea->grid->itemAt(0)->geometry().height()/ui->bigLabel->orig.height(),enx*ui->imgArea->grid->itemAt(0)->geometry().width()/ui->bigLabel->orig.width(),eny*ui->imgArea->grid->itemAt(0)->geometry().height()/ui->bigLabel->orig.height());
-    coord=true;
-    ui->resetBtn->setEnabled(1);
+    if(!coord){
+        stx=ui->bigLabel->start.x()*ui->bigLabel->orig.width()/ui->bigLabel->pixmap(Qt::ReturnByValue).width();
+        sty=ui->bigLabel->start.y()*ui->bigLabel->orig.height()/ui->bigLabel->pixmap(Qt::ReturnByValue).height();
+        enx=ui->bigLabel->end.x()*ui->bigLabel->orig.width()/ui->bigLabel->pixmap(Qt::ReturnByValue).width();
+        eny=ui->bigLabel->end.y()*ui->bigLabel->orig.height()/ui->bigLabel->pixmap(Qt::ReturnByValue).height();
+        selRect=QRect(stx,sty,enx-stx,eny-sty);
+        resSize=QSize(enx-stx,eny-sty);
+        emit filterAll(stx,sty,enx,eny,ui->bigLabel->pixmap(Qt::ReturnByValue).width(),ui->bigLabel->pixmap(Qt::ReturnByValue).height());
+        coord=true;
+        ui->resetBtn->setEnabled(1);
+    }
+    else{
+        prev->origRect=QRect(ui->bigLabel->origRect);
+        prev->bigRect=QRect(ui->bigLabel->bigRect);
+        prev->smallRect=QRect(ui->bigLabel->smallRect);
+        QPixmap temp=prev->orig.copy().scaled(prev->size(),Qt::KeepAspectRatio);
+        painter.begin(&temp);
+        painter.fillRect(0,0,prev->smallRect.left(),temp.height(),QColor(0,0,0,100));
+        painter.fillRect(prev->smallRect.right(),0,temp.width()-prev->smallRect.right(),temp.height(),QColor(0,0,0,100));
+        painter.fillRect(prev->smallRect.left(),0,prev->smallRect.right()-prev->smallRect.left(),prev->smallRect.top(),QColor(0,0,0,100));
+        painter.fillRect(prev->smallRect.left(),prev->smallRect.bottom(),prev->smallRect.right()-prev->smallRect.left(),temp.height()-prev->smallRect.bottom(),QColor(0,0,0,100));
+        painter.end();
+        prev->setPixmap(temp);
+        selRect=QRect(prev->origRect);
+    }
 }
