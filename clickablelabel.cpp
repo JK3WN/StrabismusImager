@@ -77,6 +77,10 @@ void ClickableLabel::mouseMoveEvent(QMouseEvent *event)
         else{
             end=event->pos();
             bigRect.translate(end-start);
+            if(bigRect.top()<0) bigRect.moveTop(0);
+            if(bigRect.left()<0) bigRect.moveLeft(0);
+            if(bigRect.right()>=width()) bigRect.moveRight(width()-1);
+            if(bigRect.bottom()>=height()) bigRect.moveBottom(height()-1);
             small=orig.copy().scaled(width(),height(),Qt::KeepAspectRatio);
             painter.begin(&small);
             painter.fillRect(0,0,bigRect.left(),small.height(),QColor(0,0,0,100));
