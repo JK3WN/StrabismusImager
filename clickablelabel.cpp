@@ -14,7 +14,7 @@ void ClickableLabel::mousePressEvent(QMouseEvent *event)
 {
     if(type==0) emit clicked();
     else if(type==1){
-        emit nclicked(this);
+        emit nclicked(this,event->pos());
     }
     else{
         if(origRect.topLeft()==QPoint(-1,-1)){

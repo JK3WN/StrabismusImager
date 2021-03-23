@@ -30,7 +30,7 @@ private slots:
     void sendBig(ClickableLabel *label);
     void resetImg();
     void closeBig();
-    void selection(ClickableLabel *label);
+    void selection(ClickableLabel *label,QPoint point);
     void res1Clicked();
     void res2Clicked();
     void res3Clicked();
@@ -59,5 +59,6 @@ private:
     QPainter painter;
     QFile imgFile;
     QRect selRect;
+    QPoint start,end;
 };
 #endif // IMAGER_H

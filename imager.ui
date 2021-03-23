@@ -229,6 +229,22 @@
      <string>...</string>
     </property>
    </widget>
+   <widget class="QLabel" name="dragLabel">
+    <property name="geometry">
+     <rect>
+      <x>1570</x>
+      <y>460</y>
+      <width>91</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
    <zorder>resLabel1</zorder>
    <zorder>resLabel2</zorder>
    <zorder>resLabel3</zorder>
@@ -243,6 +259,7 @@
    <zorder>backBtn</zorder>
    <zorder>imgArea</zorder>
    <zorder>resetBtn</zorder>
+   <zorder>dragLabel</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

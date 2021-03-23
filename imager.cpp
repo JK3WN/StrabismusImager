@@ -11,6 +11,7 @@ Imager::Imager(QWidget *parent)
     ui->backBtn->setIcon(style()->standardIcon(QStyle::SP_FileDialogBack));
     ui->resetBtn->setIcon(style()->standardIcon(QStyle::SP_BrowserReload));
     ui->resetBtn->setEnabled(0);
+    ui->dragLabel->setVisible(0);
     ui->bigLabel->type=2;
 
     connect(ui->actionSelect_Folder,SIGNAL(triggered()),this,SLOT(chkFolder()));
@@ -58,7 +59,7 @@ void Imager::chkFolder()
         label->type=1;
         label->setLineWidth(3);
         connect(label,SIGNAL(ndoubleClicked(ClickableLabel*)),this,SLOT(sendBig(ClickableLabel*)));
-        connect(label,SIGNAL(nclicked(ClickableLabel*)),this,SLOT(selection(ClickableLabel*)));
+        connect(label,SIGNAL(nclicked(ClickableLabel*,QPoint)),this,SLOT(selection(ClickableLabel*,QPoint)));
         connect(this,SIGNAL(filterAll(int,int,int,int,int,int)),label,SLOT(filtered(int,int,int,int,int,int)));
         connect(this,SIGNAL(resetAll()),label,SLOT(resetFilter()));
         prev=label;
@@ -119,13 +120,17 @@ void Imager::closeBig()
     ui->imgArea->setVisible(1);
 }
 
-void Imager::selection(ClickableLabel *label)
+void Imager::selection(ClickableLabel *label,QPoint point)
 {
     selimg=label->orig.copy();
     selRect=QRect(label->origRect.x(),label->origRect.y(),label->origRect.width(),label->origRect.height());
     prev->setFrameStyle(QFrame::NoFrame);
     label->setFrameStyle(QFrame::Panel|QFrame::Raised);
     prev=label;
+    start=label->pos()+point;
+    ui->dragLabel->setFixedSize(label->size());
+    ui->dragLabel->move(label->pos());
+    ui->dragLabel->setPixmap(label->pixmap(Qt::ReturnByValue));
 }
 
 void Imager::res1Clicked()

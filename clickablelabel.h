@@ -24,7 +24,7 @@ public:
 
 signals:
     void clicked();
-    void nclicked(ClickableLabel *label);
+    void nclicked(ClickableLabel *label,QPoint point);
     void doubleClicked();
     void ndoubleClicked(ClickableLabel *label);
     void sendCoords(int sx,int sy,int ex,int ey);
