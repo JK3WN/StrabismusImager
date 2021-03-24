@@ -236,6 +236,24 @@ void Imager::save()
 void Imager::setCoords()
 {
     if(!coord){
+        defimg.load(":/image/arrow1.PNG");
+        ui->resLabel1->setPixmap(defimg.scaled(ui->resLabel1->size(),Qt::KeepAspectRatio));
+        defimg.load(":/image/arrow2.PNG");
+        ui->resLabel2->setPixmap(defimg.scaled(ui->resLabel2->size(),Qt::KeepAspectRatio));
+        defimg.load(":/image/arrow3.PNG");
+        ui->resLabel3->setPixmap(defimg.scaled(ui->resLabel3->size(),Qt::KeepAspectRatio));
+        defimg.load(":/image/arrow4.PNG");
+        ui->resLabel4->setPixmap(defimg.scaled(ui->resLabel4->size(),Qt::KeepAspectRatio));
+        defimg.load(":/image/arrow5.PNG");
+        ui->resLabel5->setPixmap(defimg.scaled(ui->resLabel5->size(),Qt::KeepAspectRatio));
+        defimg.load(":/image/arrow6.PNG");
+        ui->resLabel6->setPixmap(defimg.scaled(ui->resLabel6->size(),Qt::KeepAspectRatio));
+        defimg.load(":/image/arrow7.PNG");
+        ui->resLabel7->setPixmap(defimg.scaled(ui->resLabel7->size(),Qt::KeepAspectRatio));
+        defimg.load(":/image/arrow8.PNG");
+        ui->resLabel8->setPixmap(defimg.scaled(ui->resLabel8->size(),Qt::KeepAspectRatio));
+        defimg.load(":/image/arrow9.PNG");
+        ui->resLabel9->setPixmap(defimg.scaled(ui->resLabel9->size(),Qt::KeepAspectRatio));
         stx=ui->bigLabel->start.x()*ui->bigLabel->orig.width()/ui->bigLabel->pixmap(Qt::ReturnByValue).width();
         sty=ui->bigLabel->start.y()*ui->bigLabel->orig.height()/ui->bigLabel->pixmap(Qt::ReturnByValue).height();
         enx=ui->bigLabel->end.x()*ui->bigLabel->orig.width()/ui->bigLabel->pixmap(Qt::ReturnByValue).width();
