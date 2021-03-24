@@ -29,6 +29,8 @@ signals:
     void ndoubleClicked(ClickableLabel *label);
     void sendCoords(int sx,int sy,int ex,int ey);
     void dragEnd();
+    void ndragged(ClickableLabel *label,QPoint point);
+    void ndragEnd(ClickableLabel *label,QPoint point);
 
 public slots:
     void filtered(int sx,int sy,int ex,int ey,int bw,int bh);

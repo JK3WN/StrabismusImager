@@ -20,16 +20,6 @@ Imager::Imager(QWidget *parent)
     connect(ui->resetBtn,SIGNAL(clicked()),this,SLOT(resetImg()));
     connect(ui->bigLabel,SIGNAL(dragEnd()),this,SLOT(setCoords()));
     connect(this,SIGNAL(resetAll()),ui->bigLabel,SLOT(resetFilter()));
-
-    connect(ui->resLabel1,SIGNAL(clicked()),this,SLOT(res1Clicked()));
-    connect(ui->resLabel2,SIGNAL(clicked()),this,SLOT(res2Clicked()));
-    connect(ui->resLabel3,SIGNAL(clicked()),this,SLOT(res3Clicked()));
-    connect(ui->resLabel4,SIGNAL(clicked()),this,SLOT(res4Clicked()));
-    connect(ui->resLabel5,SIGNAL(clicked()),this,SLOT(res5Clicked()));
-    connect(ui->resLabel6,SIGNAL(clicked()),this,SLOT(res6Clicked()));
-    connect(ui->resLabel7,SIGNAL(clicked()),this,SLOT(res7Clicked()));
-    connect(ui->resLabel8,SIGNAL(clicked()),this,SLOT(res8Clicked()));
-    connect(ui->resLabel9,SIGNAL(clicked()),this,SLOT(res9Clicked()));
 }
 
 Imager::~Imager()
@@ -60,6 +50,8 @@ void Imager::chkFolder()
         label->setLineWidth(3);
         connect(label,SIGNAL(ndoubleClicked(ClickableLabel*)),this,SLOT(sendBig(ClickableLabel*)));
         connect(label,SIGNAL(nclicked(ClickableLabel*,QPoint)),this,SLOT(selection(ClickableLabel*,QPoint)));
+        connect(label,SIGNAL(ndragged(ClickableLabel*,QPoint)),this,SLOT(dragging(ClickableLabel*,QPoint)));
+        connect(label,SIGNAL(ndragEnd(ClickableLabel*,QPoint)),this,SLOT(dragComp(ClickableLabel*,QPoint)));
         connect(this,SIGNAL(filterAll(int,int,int,int,int,int)),label,SLOT(filtered(int,int,int,int,int,int)));
         connect(this,SIGNAL(resetAll()),label,SLOT(resetFilter()));
         prev=label;
@@ -124,10 +116,10 @@ void Imager::selection(ClickableLabel *label,QPoint point)
 {
     selimg=label->orig.copy();
     selRect=QRect(label->origRect.x(),label->origRect.y(),label->origRect.width(),label->origRect.height());
-    prev->setFrameStyle(QFrame::NoFrame);
-    label->setFrameStyle(QFrame::Panel|QFrame::Raised);
     prev=label;
-    start=label->pos()+point;
+    ui->dragLabel->setVisible(1);
+    start=point;
+    ui->dragLabel->raise();
     ui->dragLabel->setFixedSize(label->size());
     ui->dragLabel->move(label->pos());
     ui->dragLabel->setPixmap(label->pixmap(Qt::ReturnByValue));
@@ -268,4 +260,24 @@ void Imager::setCoords()
         prev->setPixmap(temp);
         selRect=QRect(prev->origRect);
     }
+}
+
+void Imager::dragging(ClickableLabel *label,QPoint point)
+{
+    end=point;
+    ui->dragLabel->move(label->pos()+end-start);
+}
+
+void Imager::dragComp(ClickableLabel *label,QPoint point)
+{
+    ui->dragLabel->setVisible(0);
+    if(QRect(ui->resLabel1->pos(),ui->resLabel1->size()).contains(label->pos()+point)) res1Clicked();
+    if(QRect(ui->resLabel2->pos(),ui->resLabel2->size()).contains(label->pos()+point)) res2Clicked();
+    if(QRect(ui->resLabel3->pos(),ui->resLabel3->size()).contains(label->pos()+point)) res3Clicked();
+    if(QRect(ui->resLabel4->pos(),ui->resLabel4->size()).contains(label->pos()+point)) res4Clicked();
+    if(QRect(ui->resLabel5->pos(),ui->resLabel5->size()).contains(label->pos()+point)) res5Clicked();
+    if(QRect(ui->resLabel6->pos(),ui->resLabel6->size()).contains(label->pos()+point)) res6Clicked();
+    if(QRect(ui->resLabel7->pos(),ui->resLabel7->size()).contains(label->pos()+point)) res7Clicked();
+    if(QRect(ui->resLabel8->pos(),ui->resLabel8->size()).contains(label->pos()+point)) res8Clicked();
+    if(QRect(ui->resLabel9->pos(),ui->resLabel9->size()).contains(label->pos()+point)) res9Clicked();
 }

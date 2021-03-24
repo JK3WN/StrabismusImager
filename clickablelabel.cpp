@@ -92,6 +92,9 @@ void ClickableLabel::mouseMoveEvent(QMouseEvent *event)
             start=end;
         }
     }
+    else if(type==1){
+        emit ndragged(this,event->pos());
+    }
 }
 
 void ClickableLabel::mouseReleaseEvent(QMouseEvent *event)
@@ -123,6 +126,9 @@ void ClickableLabel::mouseReleaseEvent(QMouseEvent *event)
             smallRect.moveTopLeft(QPoint(bigRect.left()/3,bigRect.top()/3));
             emit dragEnd();
         }
+    }
+    else if(type==1){
+        emit ndragEnd(this,event->pos());
     }
 }
 

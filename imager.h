@@ -42,6 +42,8 @@ private slots:
     void res9Clicked();
     void save();
     void setCoords();
+    void dragging(ClickableLabel *label,QPoint point);
+    void dragComp(ClickableLabel *label,QPoint point);
 
 signals:
     void filterAll(int sx,int sy,int ex,int ey,int bw,int bh);
