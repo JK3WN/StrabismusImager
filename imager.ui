@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Strabismus Imager</string>
+   <string>Nine Cardinal Positions Image Creator</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="ClickableLabel" name="bigLabel">

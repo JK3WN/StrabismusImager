@@ -6,7 +6,7 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    QCoreApplication::setApplicationName("Strabismus Imager");
+    QCoreApplication::setApplicationName("Nine Cardinal Positions Image Creator");
     QPixmap pixmap(":/image/SplashImage.png");
     QSplashScreen splash(pixmap.scaled(960,540,Qt::KeepAspectRatio,Qt::SmoothTransformation));
     splash.show();
