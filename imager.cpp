@@ -11,6 +11,7 @@ Imager::Imager(QWidget *parent)
     ui->backBtn->setIcon(style()->standardIcon(QStyle::SP_FileDialogBack));
     ui->resetBtn->setIcon(style()->standardIcon(QStyle::SP_BrowserReload));
     ui->resetBtn->setEnabled(0);
+    ui->saveBtn->setEnabled(0);
     ui->dragLabel->setVisible(0);
     ui->bigLabel->type=2;
 
@@ -39,6 +40,13 @@ void Imager::chkFolder()
         ClickableLabel *label=new ClickableLabel();
         QPixmap pix(dir->absoluteFilePath(v));
         label->setFixedSize(ui->imgArea->viewport()->width()/3,ui->imgArea->height()/3);
+        QPixmap temp(label->size());
+        temp=temp.scaled(pix.size(),Qt::KeepAspectRatioByExpanding);
+        painter.begin(&temp);
+        painter.fillRect(0,0,temp.width(),temp.height(),QColor(255,255,255));
+        painter.drawPixmap((temp.width()-pix.width())/2,(temp.height()-pix.height())/2,pix.width(),pix.height(),pix);
+        painter.end();
+        pix=temp;
         label->setPixmap(pix.scaled(label->size(),Qt::KeepAspectRatio));
         label->setAlignment(Qt::AlignCenter);
         label->orig=pix;
@@ -79,6 +87,7 @@ void Imager::sendBig(ClickableLabel *label)
     }
     ui->bigLabel->orig=label->orig.copy();
     ui->imgArea->setVisible(0);
+    count++;
 }
 
 void Imager::resetImg()
@@ -86,6 +95,7 @@ void Imager::resetImg()
     memset(capt,false,sizeof(capt));
     coord=false;
     ui->resetBtn->setEnabled(0);
+    ui->saveBtn->setEnabled(0);
     defimg.load(":/image/arrow1.PNG");
     ui->resLabel1->setPixmap(defimg.scaled(ui->resLabel1->size(),Qt::KeepAspectRatio));
     defimg.load(":/image/arrow2.PNG");
@@ -105,11 +115,14 @@ void Imager::resetImg()
     defimg.load(":/image/arrow9.PNG");
     ui->resLabel9->setPixmap(defimg.scaled(ui->resLabel9->size(),Qt::KeepAspectRatio));
     emit resetAll();
+    if(!ui->imgArea->isVisible()) count=1;
+    else count=0;
 }
 
 void Imager::closeBig()
 {
     ui->imgArea->setVisible(1);
+    count++;
 }
 
 void Imager::selection(ClickableLabel *label,QPoint point)
@@ -121,7 +134,7 @@ void Imager::selection(ClickableLabel *label,QPoint point)
     start=point;
     ui->dragLabel->raise();
     ui->dragLabel->setFixedSize(label->size());
-    ui->dragLabel->move(label->pos());
+    ui->dragLabel->move(label->pos().x(),label->pos().y()-ui->imgArea->verticalScrollBar()->value());
     ui->dragLabel->setPixmap(label->pixmap(Qt::ReturnByValue));
 }
 
@@ -236,6 +249,7 @@ void Imager::save()
 void Imager::setCoords()
 {
     if(!coord){
+        memset(capt,false,sizeof(capt));
         defimg.load(":/image/arrow1.PNG");
         ui->resLabel1->setPixmap(defimg.scaled(ui->resLabel1->size(),Qt::KeepAspectRatio));
         defimg.load(":/image/arrow2.PNG");
@@ -263,6 +277,7 @@ void Imager::setCoords()
         emit filterAll(stx,sty,enx,eny,ui->bigLabel->pixmap(Qt::ReturnByValue).width(),ui->bigLabel->pixmap(Qt::ReturnByValue).height());
         coord=true;
         ui->resetBtn->setEnabled(1);
+        ui->saveBtn->setEnabled(1);
     }
     else{
         prev->origRect=QRect(ui->bigLabel->origRect);
@@ -283,19 +298,42 @@ void Imager::setCoords()
 void Imager::dragging(ClickableLabel *label,QPoint point)
 {
     end=point;
-    ui->dragLabel->move(label->pos()+end-start);
+    ui->dragLabel->move((label->pos()+end-start).x(),(label->pos()+end-start).y()-ui->imgArea->verticalScrollBar()->value());
 }
 
 void Imager::dragComp(ClickableLabel *label,QPoint point)
 {
     ui->dragLabel->setVisible(0);
-    if(QRect(ui->resLabel1->pos(),ui->resLabel1->size()).contains(label->pos()+point)) res1Clicked();
-    if(QRect(ui->resLabel2->pos(),ui->resLabel2->size()).contains(label->pos()+point)) res2Clicked();
-    if(QRect(ui->resLabel3->pos(),ui->resLabel3->size()).contains(label->pos()+point)) res3Clicked();
-    if(QRect(ui->resLabel4->pos(),ui->resLabel4->size()).contains(label->pos()+point)) res4Clicked();
-    if(QRect(ui->resLabel5->pos(),ui->resLabel5->size()).contains(label->pos()+point)) res5Clicked();
-    if(QRect(ui->resLabel6->pos(),ui->resLabel6->size()).contains(label->pos()+point)) res6Clicked();
-    if(QRect(ui->resLabel7->pos(),ui->resLabel7->size()).contains(label->pos()+point)) res7Clicked();
-    if(QRect(ui->resLabel8->pos(),ui->resLabel8->size()).contains(label->pos()+point)) res8Clicked();
-    if(QRect(ui->resLabel9->pos(),ui->resLabel9->size()).contains(label->pos()+point)) res9Clicked();
+    if(QRect(ui->resLabel1->pos(),ui->resLabel1->size()).contains((label->pos()+point).x(),(label->pos()+point).y()-ui->imgArea->verticalScrollBar()->value())) res1Clicked();
+    if(QRect(ui->resLabel2->pos(),ui->resLabel2->size()).contains((label->pos()+point).x(),(label->pos()+point).y()-ui->imgArea->verticalScrollBar()->value())) res2Clicked();
+    if(QRect(ui->resLabel3->pos(),ui->resLabel3->size()).contains((label->pos()+point).x(),(label->pos()+point).y()-ui->imgArea->verticalScrollBar()->value())) res3Clicked();
+    if(QRect(ui->resLabel4->pos(),ui->resLabel4->size()).contains((label->pos()+point).x(),(label->pos()+point).y()-ui->imgArea->verticalScrollBar()->value())) res4Clicked();
+    if(QRect(ui->resLabel5->pos(),ui->resLabel5->size()).contains((label->pos()+point).x(),(label->pos()+point).y()-ui->imgArea->verticalScrollBar()->value())) res5Clicked();
+    if(QRect(ui->resLabel6->pos(),ui->resLabel6->size()).contains((label->pos()+point).x(),(label->pos()+point).y()-ui->imgArea->verticalScrollBar()->value())) res6Clicked();
+    if(QRect(ui->resLabel7->pos(),ui->resLabel7->size()).contains((label->pos()+point).x(),(label->pos()+point).y()-ui->imgArea->verticalScrollBar()->value())) res7Clicked();
+    if(QRect(ui->resLabel8->pos(),ui->resLabel8->size()).contains((label->pos()+point).x(),(label->pos()+point).y()-ui->imgArea->verticalScrollBar()->value())) res8Clicked();
+    if(QRect(ui->resLabel9->pos(),ui->resLabel9->size()).contains((label->pos()+point).x(),(label->pos()+point).y()-ui->imgArea->verticalScrollBar()->value())) res9Clicked();
+}
+
+void Imager::keyPressEvent(QKeyEvent *event)
+{
+    if(event->key()==Qt::Key_Escape){
+        if(count==1) resetImg();
+        else if(!ui->imgArea->isVisible()){
+            prev->filtered(stx,sty,enx,eny,ui->bigLabel->pixmap(Qt::ReturnByValue).width(),ui->bigLabel->pixmap(Qt::ReturnByValue).height());
+            ui->bigLabel->origRect=QRect(prev->origRect);
+            ui->bigLabel->bigRect=QRect(prev->bigRect);
+            ui->bigLabel->smallRect=QRect(prev->smallRect);
+            QPixmap temp=prev->orig.copy().scaled(ui->bigLabel->size(),Qt::KeepAspectRatio);
+            painter.begin(&temp);
+            painter.fillRect(0,0,prev->bigRect.left(),temp.height(),QColor(0,0,0,100));
+            painter.fillRect(prev->bigRect.right(),0,temp.width()-prev->bigRect.right(),temp.height(),QColor(0,0,0,100));
+            painter.fillRect(prev->bigRect.left(),0,prev->bigRect.right()-prev->bigRect.left(),prev->bigRect.top(),QColor(0,0,0,100));
+            painter.fillRect(prev->bigRect.left(),prev->bigRect.bottom(),prev->bigRect.right()-prev->bigRect.left(),temp.height()-prev->bigRect.bottom(),QColor(0,0,0,100));
+            painter.end();
+            ui->bigLabel->setPixmap(temp);
+            selRect=QRect(prev->origRect);
+        }
+    }
+    setFocus();
 }

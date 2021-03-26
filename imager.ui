@@ -187,7 +187,7 @@
    <widget class="QToolButton" name="saveBtn">
     <property name="geometry">
      <rect>
-      <x>980</x>
+      <x>1660</x>
       <y>410</y>
       <width>41</width>
       <height>41</height>
@@ -216,7 +216,7 @@
    <widget class="QToolButton" name="resetBtn">
     <property name="geometry">
      <rect>
-      <x>1020</x>
+      <x>980</x>
       <y>410</y>
       <width>41</width>
       <height>41</height>

@@ -44,6 +44,7 @@ private slots:
     void setCoords();
     void dragging(ClickableLabel *label,QPoint point);
     void dragComp(ClickableLabel *label,QPoint point);
+    void keyPressEvent(QKeyEvent *event);
 
 signals:
     void filterAll(int sx,int sy,int ex,int ey,int bw,int bh);
@@ -54,7 +55,7 @@ private:
     QDir *dir;
     QStringList list;
     QPixmap defimg,selimg,resimg[9];
-    int mrow=0,mcol=0,max=0,stx=0,sty=0,enx=0,eny=0;
+    int mrow=0,mcol=0,max=0,stx=0,sty=0,enx=0,eny=0,count=0;
     bool capt[9]={false};
     ClickableLabel *prev;
     QSize resSize;
