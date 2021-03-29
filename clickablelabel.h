@@ -4,6 +4,7 @@
 #include <QLabel>
 #include <QWidget>
 #include <QMouseEvent>
+#include <QHoverEvent>
 #include <QDebug>
 #include <QPainter>
 
@@ -41,6 +42,8 @@ protected:
     void mouseMoveEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);
     void mouseDoubleClickEvent(QMouseEvent *event);
+    bool event(QEvent *e);
+    void hoverMove(QHoverEvent *event);
 };
 
 #endif // CLICKABLELABEL_H

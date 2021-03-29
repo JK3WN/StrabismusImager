@@ -4,6 +4,7 @@ ClickableLabel::ClickableLabel(QWidget *parent,Qt::WindowFlags f)
     : QLabel(parent)
 {
     origRect=QRect(-1,-1,0,0);
+    setAttribute(Qt::WA_Hover);
 }
 
 ClickableLabel::~ClickableLabel()
@@ -87,6 +88,13 @@ void ClickableLabel::mouseMoveEvent(QMouseEvent *event)
             painter.fillRect(bigRect.right(),0,small.width()-bigRect.right(),small.height(),QColor(0,0,0,100));
             painter.fillRect(bigRect.left(),0,bigRect.right()-bigRect.left(),bigRect.top(),QColor(0,0,0,100));
             painter.fillRect(bigRect.left(),bigRect.bottom(),bigRect.right()-bigRect.left(),small.height()-bigRect.bottom(),QColor(0,0,0,100));
+            painter.setBrush(Qt::white);
+            QPen pen(QColor(150,150,150),3);
+            painter.setPen(pen);
+            painter.drawEllipse(bigRect.topLeft(),6,6);
+            painter.drawEllipse(bigRect.topRight(),6,6);
+            painter.drawEllipse(bigRect.bottomLeft(),6,6);
+            painter.drawEllipse(bigRect.bottomRight(),6,6);
             painter.end();
             setPixmap(small);
             start=end;
@@ -120,6 +128,17 @@ void ClickableLabel::mouseReleaseEvent(QMouseEvent *event)
             bigRect=QRect(start,end);
             smallRect=QRect(start/3,end/3);
             origRect=QRect(start.x()*orig.width()/width(),start.y()*orig.height()/height(),(end.x()-start.x())*orig.width()/width(),(end.y()-start.y())*orig.height()/height());
+            small=this->pixmap(Qt::ReturnByValue).copy().scaled(width(),height(),Qt::KeepAspectRatio);
+            painter.begin(&small);
+            painter.setBrush(Qt::white);
+            QPen pen(QColor(150,150,150),3);
+            painter.setPen(pen);
+            painter.drawEllipse(bigRect.topLeft(),6,6);
+            painter.drawEllipse(bigRect.topRight(),6,6);
+            painter.drawEllipse(bigRect.bottomLeft(),6,6);
+            painter.drawEllipse(bigRect.bottomRight(),6,6);
+            painter.end();
+            setPixmap(small);
         }
         else{
             origRect.moveTopLeft(QPoint(bigRect.left()*orig.width()/width(),bigRect.top()*orig.height()/height()));
@@ -162,4 +181,23 @@ void ClickableLabel::resetFilter()
 {
     if(!orig.isNull()) setPixmap(orig.copy().scaled(width(),height(),Qt::KeepAspectRatio));
     origRect.setTopLeft(QPoint(-1,-1));
+}
+
+bool ClickableLabel::event(QEvent *e)
+{
+    if(e->type()==QHoverEvent::HoverMove){
+        hoverMove(static_cast<QHoverEvent*>(e));
+        return true;
+    }
+    return QWidget::event(e);
+}
+
+void ClickableLabel::hoverMove(QHoverEvent *event)
+{
+    if(this->type==2){
+        if((bigRect.topLeft()-event->pos()).manhattanLength()<=6||(bigRect.bottomRight()-event->pos()).manhattanLength()<=6) setCursor(Qt::SizeFDiagCursor);
+        else if((bigRect.topRight()-event->pos()).manhattanLength()<=6||(bigRect.bottomLeft()-event->pos()).manhattanLength()<=6) setCursor(Qt::SizeBDiagCursor);
+        else if(bigRect.contains(event->pos())) setCursor(Qt::SizeAllCursor);
+        else setCursor(Qt::ArrowCursor);
+    }
 }
