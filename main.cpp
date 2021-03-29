@@ -10,9 +10,9 @@ int main(int argc, char *argv[])
     QPixmap pixmap(":/image/SplashImage.png");
     QSplashScreen splash(pixmap.scaled(960,540,Qt::KeepAspectRatio,Qt::SmoothTransformation));
     splash.show();
-    QTimer::singleShot(2000,&splash,&QWidget::close);
+    QTimer::singleShot(1000,&splash,&QWidget::close);
     Imager w;
-    QTimer::singleShot(2000,&w,SLOT(show()));
-    QTimer::singleShot(2100,&w,SLOT(chkFolder()));
+    QTimer::singleShot(1000,&w,SLOT(show()));
+    QTimer::singleShot(1100,&w,SLOT(chkFolder()));
     return a.exec();
 }

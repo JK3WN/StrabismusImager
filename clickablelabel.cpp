@@ -108,13 +108,23 @@ void ClickableLabel::mouseMoveEvent(QMouseEvent *event)
                 bigRect.setTopLeft(QPoint(bigRect.bottomRight().x()-sizee.scaled(bigRect.size(),Qt::KeepAspectRatio).width(),bigRect.bottomRight().y()-sizee.scaled(bigRect.size(),Qt::KeepAspectRatio).height()));
                 if(bigRect.top()<0) bigRect.setTop(0);
                 if(bigRect.left()<0) bigRect.setLeft(0);
+                if(bigRect.top()>=height()) bigRect.setTop(height()-1);
+                if(bigRect.left()>=width()) bigRect.setLeft(width()-1);
                 bigRect.setTopLeft(QPoint(bigRect.bottomRight().x()-sizee.scaled(bigRect.size(),Qt::KeepAspectRatio).width(),bigRect.bottomRight().y()-sizee.scaled(bigRect.size(),Qt::KeepAspectRatio).height()));
                 small=orig.copy().scaled(width(),height(),Qt::KeepAspectRatio);
                 painter.begin(&small);
-                painter.fillRect(0,0,bigRect.left(),small.height(),QColor(0,0,0,100));
-                painter.fillRect(bigRect.right(),0,small.width()-bigRect.right(),small.height(),QColor(0,0,0,100));
-                painter.fillRect(bigRect.left(),0,bigRect.right()-bigRect.left(),bigRect.top(),QColor(0,0,0,100));
-                painter.fillRect(bigRect.left(),bigRect.bottom(),bigRect.right()-bigRect.left(),small.height()-bigRect.bottom(),QColor(0,0,0,100));
+                if(bigRect.left()<=bigRect.right()){
+                    painter.fillRect(0,0,bigRect.left(),small.height(),QColor(0,0,0,100));
+                    painter.fillRect(bigRect.right(),0,small.width()-bigRect.right(),small.height(),QColor(0,0,0,100));
+                    painter.fillRect(bigRect.left(),0,bigRect.right()-bigRect.left(),bigRect.top(),QColor(0,0,0,100));
+                    painter.fillRect(bigRect.left(),bigRect.bottom(),bigRect.right()-bigRect.left(),small.height()-bigRect.bottom(),QColor(0,0,0,100));
+                }
+                else{
+                    painter.fillRect(0,0,bigRect.right(),small.height(),QColor(0,0,0,100));
+                    painter.fillRect(bigRect.left(),0,small.width()-bigRect.left(),small.height(),QColor(0,0,0,100));
+                    painter.fillRect(bigRect.right(),0,bigRect.left()-bigRect.right(),bigRect.bottom(),QColor(0,0,0,100));
+                    painter.fillRect(bigRect.right(),bigRect.top(),bigRect.left()-bigRect.right(),small.height()-bigRect.top(),QColor(0,0,0,100));
+                }
                 painter.setBrush(Qt::white);
                 QPen pen(QColor(150,150,150),3);
                 painter.setPen(pen);
@@ -127,6 +137,38 @@ void ClickableLabel::mouseMoveEvent(QMouseEvent *event)
                 break;
             }
             case 3:{
+                end=event->pos();
+                bigRect.setTopRight(end);
+                bigRect.setTopRight(QPoint(bigRect.bottomLeft().x()+sizee.scaled(bigRect.size(),Qt::KeepAspectRatio).width(),bigRect.bottomLeft().y()-sizee.scaled(bigRect.size(),Qt::KeepAspectRatio).height()));
+                if(bigRect.top()<0) bigRect.setTop(0);
+                if(bigRect.right()<0) bigRect.setRight(0);
+                if(bigRect.top()>=height()) bigRect.setTop(height()-1);
+                if(bigRect.right()>=width()) bigRect.setRight(width()-1);
+                qDebug()<<bigRect.right();
+                bigRect.setTopRight(QPoint(bigRect.bottomLeft().x()+sizee.scaled(bigRect.size(),Qt::KeepAspectRatio).width(),bigRect.bottomLeft().y()-sizee.scaled(bigRect.size(),Qt::KeepAspectRatio).height()));
+                small=orig.copy().scaled(width(),height(),Qt::KeepAspectRatio);
+                painter.begin(&small);
+                if(bigRect.left()<=bigRect.right()){
+                    painter.fillRect(0,0,bigRect.left(),small.height(),QColor(0,0,0,100));
+                    painter.fillRect(bigRect.right(),0,small.width()-bigRect.right(),small.height(),QColor(0,0,0,100));
+                    painter.fillRect(bigRect.left(),0,bigRect.right()-bigRect.left(),bigRect.top(),QColor(0,0,0,100));
+                    painter.fillRect(bigRect.left(),bigRect.bottom(),bigRect.right()-bigRect.left(),small.height()-bigRect.bottom(),QColor(0,0,0,100));
+                }
+                else{
+                    painter.fillRect(0,0,bigRect.right(),small.height(),QColor(0,0,0,100));
+                    painter.fillRect(bigRect.left(),0,small.width()-bigRect.left(),small.height(),QColor(0,0,0,100));
+                    painter.fillRect(bigRect.right(),0,bigRect.left()-bigRect.right(),bigRect.bottom(),QColor(0,0,0,100));
+                    painter.fillRect(bigRect.right(),bigRect.top(),bigRect.left()-bigRect.right(),small.height()-bigRect.top(),QColor(0,0,0,100));
+                }
+                painter.setBrush(Qt::white);
+                QPen pen(QColor(150,150,150),3);
+                painter.setPen(pen);
+                painter.drawEllipse(bigRect.topLeft(),6,6);
+                painter.drawEllipse(bigRect.topRight(),6,6);
+                painter.drawEllipse(bigRect.bottomLeft(),6,6);
+                painter.drawEllipse(bigRect.bottomRight(),6,6);
+                painter.end();
+                setPixmap(small);
                 break;
             }
             case 4:{
@@ -180,6 +222,9 @@ void ClickableLabel::mouseReleaseEvent(QMouseEvent *event)
             setPixmap(small);
         }
         else{
+            if(bigRect.left()>bigRect.right()){
+                bigRect.setRect(bigRect.bottomRight().x(),bigRect.bottomRight().y(),-bigRect.width(),-bigRect.height());
+            }
             origRect.moveTopLeft(QPoint(bigRect.left()*orig.width()/width(),bigRect.top()*orig.height()/height()));
             smallRect.moveTopLeft(QPoint(bigRect.left()/3,bigRect.top()/3));
             origRect.setSize(bigRect.size()*orig.width()/width());
