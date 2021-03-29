@@ -81,6 +81,13 @@ void Imager::sendBig(ClickableLabel *label)
         painter.fillRect(label->bigRect.right(),0,temp.width()-label->bigRect.right(),temp.height(),QColor(0,0,0,100));
         painter.fillRect(label->bigRect.left(),0,label->bigRect.right()-label->bigRect.left(),label->bigRect.top(),QColor(0,0,0,100));
         painter.fillRect(label->bigRect.left(),label->bigRect.bottom(),label->bigRect.right()-label->bigRect.left(),temp.height()-label->bigRect.bottom(),QColor(0,0,0,100));
+        painter.setBrush(Qt::white);
+        QPen pen(QColor(150,150,150),3);
+        painter.setPen(pen);
+        painter.drawEllipse(label->bigRect.topLeft(),6,6);
+        painter.drawEllipse(label->bigRect.topRight(),6,6);
+        painter.drawEllipse(label->bigRect.bottomLeft(),6,6);
+        painter.drawEllipse(label->bigRect.bottomRight(),6,6);
         painter.end();
         ui->bigLabel->setPixmap(temp);
         ui->bigLabel->bigRect=QRect(label->bigRect);

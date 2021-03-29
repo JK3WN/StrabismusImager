@@ -22,6 +22,7 @@ public:
     QPoint start,end,dragStart;
     QRect origRect,bigRect,smallRect;
     QPixmap sendPixmap();
+    QSize sizee;
 
 signals:
     void clicked();

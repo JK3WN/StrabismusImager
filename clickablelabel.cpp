@@ -28,6 +28,7 @@ void ClickableLabel::mousePressEvent(QMouseEvent *event)
         }
         else{
             start=event->pos();
+            sizee=bigRect.size();
         }
     }
 }
@@ -75,29 +76,67 @@ void ClickableLabel::mouseMoveEvent(QMouseEvent *event)
             painter.end();
             setPixmap(small);
         }
-        else if(adjust==1){
-            end=event->pos();
-            bigRect.translate(end-start);
-            if(bigRect.top()<0) bigRect.moveTop(0);
-            if(bigRect.left()<0) bigRect.moveLeft(0);
-            if(bigRect.right()>=width()) bigRect.moveRight(width()-1);
-            if(bigRect.bottom()>=height()) bigRect.moveBottom(height()-1);
-            small=orig.copy().scaled(width(),height(),Qt::KeepAspectRatio);
-            painter.begin(&small);
-            painter.fillRect(0,0,bigRect.left(),small.height(),QColor(0,0,0,100));
-            painter.fillRect(bigRect.right(),0,small.width()-bigRect.right(),small.height(),QColor(0,0,0,100));
-            painter.fillRect(bigRect.left(),0,bigRect.right()-bigRect.left(),bigRect.top(),QColor(0,0,0,100));
-            painter.fillRect(bigRect.left(),bigRect.bottom(),bigRect.right()-bigRect.left(),small.height()-bigRect.bottom(),QColor(0,0,0,100));
-            painter.setBrush(Qt::white);
-            QPen pen(QColor(150,150,150),3);
-            painter.setPen(pen);
-            painter.drawEllipse(bigRect.topLeft(),6,6);
-            painter.drawEllipse(bigRect.topRight(),6,6);
-            painter.drawEllipse(bigRect.bottomLeft(),6,6);
-            painter.drawEllipse(bigRect.bottomRight(),6,6);
-            painter.end();
-            setPixmap(small);
-            start=end;
+        else switch(adjust){
+            case 1:{
+                end=event->pos();
+                bigRect.translate(end-start);
+                if(bigRect.top()<0) bigRect.moveTop(0);
+                if(bigRect.left()<0) bigRect.moveLeft(0);
+                if(bigRect.right()>=width()) bigRect.moveRight(width()-1);
+                if(bigRect.bottom()>=height()) bigRect.moveBottom(height()-1);
+                small=orig.copy().scaled(width(),height(),Qt::KeepAspectRatio);
+                painter.begin(&small);
+                painter.fillRect(0,0,bigRect.left(),small.height(),QColor(0,0,0,100));
+                painter.fillRect(bigRect.right(),0,small.width()-bigRect.right(),small.height(),QColor(0,0,0,100));
+                painter.fillRect(bigRect.left(),0,bigRect.right()-bigRect.left(),bigRect.top(),QColor(0,0,0,100));
+                painter.fillRect(bigRect.left(),bigRect.bottom(),bigRect.right()-bigRect.left(),small.height()-bigRect.bottom(),QColor(0,0,0,100));
+                painter.setBrush(Qt::white);
+                QPen pen(QColor(150,150,150),3);
+                painter.setPen(pen);
+                painter.drawEllipse(bigRect.topLeft(),6,6);
+                painter.drawEllipse(bigRect.topRight(),6,6);
+                painter.drawEllipse(bigRect.bottomLeft(),6,6);
+                painter.drawEllipse(bigRect.bottomRight(),6,6);
+                painter.end();
+                setPixmap(small);
+                start=end;
+                break;
+            }
+            case 2:{
+                end=event->pos();
+                bigRect.setTopLeft(end);
+                bigRect.setTopLeft(QPoint(bigRect.bottomRight().x()-sizee.scaled(bigRect.size(),Qt::KeepAspectRatio).width(),bigRect.bottomRight().y()-sizee.scaled(bigRect.size(),Qt::KeepAspectRatio).height()));
+                if(bigRect.top()<0) bigRect.setTop(0);
+                if(bigRect.left()<0) bigRect.setLeft(0);
+                bigRect.setTopLeft(QPoint(bigRect.bottomRight().x()-sizee.scaled(bigRect.size(),Qt::KeepAspectRatio).width(),bigRect.bottomRight().y()-sizee.scaled(bigRect.size(),Qt::KeepAspectRatio).height()));
+                small=orig.copy().scaled(width(),height(),Qt::KeepAspectRatio);
+                painter.begin(&small);
+                painter.fillRect(0,0,bigRect.left(),small.height(),QColor(0,0,0,100));
+                painter.fillRect(bigRect.right(),0,small.width()-bigRect.right(),small.height(),QColor(0,0,0,100));
+                painter.fillRect(bigRect.left(),0,bigRect.right()-bigRect.left(),bigRect.top(),QColor(0,0,0,100));
+                painter.fillRect(bigRect.left(),bigRect.bottom(),bigRect.right()-bigRect.left(),small.height()-bigRect.bottom(),QColor(0,0,0,100));
+                painter.setBrush(Qt::white);
+                QPen pen(QColor(150,150,150),3);
+                painter.setPen(pen);
+                painter.drawEllipse(bigRect.topLeft(),6,6);
+                painter.drawEllipse(bigRect.topRight(),6,6);
+                painter.drawEllipse(bigRect.bottomLeft(),6,6);
+                painter.drawEllipse(bigRect.bottomRight(),6,6);
+                painter.end();
+                setPixmap(small);
+                break;
+            }
+            case 3:{
+                break;
+            }
+            case 4:{
+                break;
+            }
+            case 5:{
+                break;
+            }
+            default:
+                break;
         }
     }
     else if(type==1){
@@ -143,6 +182,8 @@ void ClickableLabel::mouseReleaseEvent(QMouseEvent *event)
         else{
             origRect.moveTopLeft(QPoint(bigRect.left()*orig.width()/width(),bigRect.top()*orig.height()/height()));
             smallRect.moveTopLeft(QPoint(bigRect.left()/3,bigRect.top()/3));
+            origRect.setSize(bigRect.size()*orig.width()/width());
+            smallRect.setSize(bigRect.size()/3);
             emit dragEnd();
         }
     }
@@ -197,7 +238,6 @@ bool ClickableLabel::event(QEvent *e)
 void ClickableLabel::hoverMove(QHoverEvent *event)
 {
     if(this->type==2){
-        qDebug()<<adjust;
         if(origRect.topLeft()==QPoint(-1,-1)){
             setCursor(Qt::CrossCursor);
             adjust=0;
@@ -211,11 +251,11 @@ void ClickableLabel::hoverMove(QHoverEvent *event)
             adjust=3;
         }
         else if((bigRect.bottomLeft()-event->pos()).manhattanLength()<=6){
-            setCursor(Qt::SizeFDiagCursor);
+            setCursor(Qt::SizeBDiagCursor);
             adjust=4;
         }
         else if((bigRect.bottomRight()-event->pos()).manhattanLength()<=6){
-            setCursor(Qt::SizeBDiagCursor);
+            setCursor(Qt::SizeFDiagCursor);
             adjust=5;
         }
         else if(bigRect.contains(event->pos())){
