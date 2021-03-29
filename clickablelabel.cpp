@@ -75,7 +75,7 @@ void ClickableLabel::mouseMoveEvent(QMouseEvent *event)
             painter.end();
             setPixmap(small);
         }
-        else{
+        else if(adjust==1){
             end=event->pos();
             bigRect.translate(end-start);
             if(bigRect.top()<0) bigRect.moveTop(0);
@@ -185,7 +185,9 @@ void ClickableLabel::resetFilter()
 
 bool ClickableLabel::event(QEvent *e)
 {
-    if(e->type()==QHoverEvent::HoverMove){
+    if(e->type()==QMouseEvent::MouseButtonPress) down=true;
+    if(e->type()==QMouseEvent::MouseButtonRelease) down=false;
+    if(e->type()==QHoverEvent::HoverMove&&!down){
         hoverMove(static_cast<QHoverEvent*>(e));
         return true;
     }
@@ -195,9 +197,34 @@ bool ClickableLabel::event(QEvent *e)
 void ClickableLabel::hoverMove(QHoverEvent *event)
 {
     if(this->type==2){
-        if((bigRect.topLeft()-event->pos()).manhattanLength()<=6||(bigRect.bottomRight()-event->pos()).manhattanLength()<=6) setCursor(Qt::SizeFDiagCursor);
-        else if((bigRect.topRight()-event->pos()).manhattanLength()<=6||(bigRect.bottomLeft()-event->pos()).manhattanLength()<=6) setCursor(Qt::SizeBDiagCursor);
-        else if(bigRect.contains(event->pos())) setCursor(Qt::SizeAllCursor);
-        else setCursor(Qt::ArrowCursor);
+        qDebug()<<adjust;
+        if(origRect.topLeft()==QPoint(-1,-1)){
+            setCursor(Qt::CrossCursor);
+            adjust=0;
+        }
+        else if((bigRect.topLeft()-event->pos()).manhattanLength()<=6){
+            setCursor(Qt::SizeFDiagCursor);
+            adjust=2;
+        }
+        else if((bigRect.topRight()-event->pos()).manhattanLength()<=6){
+            setCursor(Qt::SizeBDiagCursor);
+            adjust=3;
+        }
+        else if((bigRect.bottomLeft()-event->pos()).manhattanLength()<=6){
+            setCursor(Qt::SizeFDiagCursor);
+            adjust=4;
+        }
+        else if((bigRect.bottomRight()-event->pos()).manhattanLength()<=6){
+            setCursor(Qt::SizeBDiagCursor);
+            adjust=5;
+        }
+        else if(bigRect.contains(event->pos())){
+            setCursor(Qt::SizeAllCursor);
+            adjust=1;
+        }
+        else{
+            setCursor(Qt::ArrowCursor);
+            adjust=-1;
+        }
     }
 }

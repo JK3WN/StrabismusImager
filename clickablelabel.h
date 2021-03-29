@@ -15,8 +15,8 @@ class ClickableLabel : public QLabel
 public:
     explicit ClickableLabel(QWidget *parent=Q_NULLPTR,Qt::WindowFlags f=Qt::WindowFlags());
     ~ClickableLabel();
-    int ro=-1,co=-1,type=0;
-    bool drag=false;
+    int ro=-1,co=-1,type=0,adjust=-1;
+    bool drag=false,down=false;
     QPixmap orig,small;
     QPainter painter;
     QPoint start,end,dragStart;
