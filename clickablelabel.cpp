@@ -13,7 +13,9 @@ ClickableLabel::~ClickableLabel()
 
 void ClickableLabel::mousePressEvent(QMouseEvent *event)
 {
-    if(type==0) emit clicked();
+    if(type==0){
+        start=event->pos();
+    }
     else if(type==1){
         emit nclicked(this,event->pos());
     }

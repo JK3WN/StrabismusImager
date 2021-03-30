@@ -151,6 +151,7 @@ void Imager::res1Clicked()
 {
     if(selimg.isNull()) return;
     capt[0]=true;
+    ui->resLabel1->orig=selimg.copy();
     if(!coord) resimg[0]=selimg.copy();
     else resimg[0]=selimg.copy(selRect);
     ui->resLabel1->setPixmap(resimg[0].scaled(ui->resLabel1->size(),Qt::KeepAspectRatio));
@@ -160,6 +161,7 @@ void Imager::res2Clicked()
 {
     if(selimg.isNull()) return;
     capt[1]=true;
+    ui->resLabel2->orig=selimg.copy();
     if(!coord) resimg[1]=selimg.copy();
     else resimg[1]=selimg.copy(selRect);
     ui->resLabel2->setPixmap(resimg[1].scaled(ui->resLabel2->size(),Qt::KeepAspectRatio));
@@ -169,6 +171,7 @@ void Imager::res3Clicked()
 {
     if(selimg.isNull()) return;
     capt[2]=true;
+    ui->resLabel3->orig=selimg.copy();
     if(!coord) resimg[2]=selimg.copy();
     else resimg[2]=selimg.copy(selRect);
     ui->resLabel3->setPixmap(resimg[2].scaled(ui->resLabel3->size(),Qt::KeepAspectRatio));
@@ -178,6 +181,7 @@ void Imager::res4Clicked()
 {
     if(selimg.isNull()) return;
     capt[3]=true;
+    ui->resLabel4->orig=selimg.copy();
     if(!coord) resimg[3]=selimg.copy();
     else resimg[3]=selimg.copy(selRect);
     ui->resLabel4->setPixmap(resimg[3].scaled(ui->resLabel4->size(),Qt::KeepAspectRatio));
@@ -187,6 +191,7 @@ void Imager::res5Clicked()
 {
     if(selimg.isNull()) return;
     capt[4]=true;
+    ui->resLabel5->orig=selimg.copy();
     if(!coord) resimg[4]=selimg.copy();
     else resimg[4]=selimg.copy(selRect);
     ui->resLabel5->setPixmap(resimg[4].scaled(ui->resLabel5->size(),Qt::KeepAspectRatio));
@@ -196,6 +201,7 @@ void Imager::res6Clicked()
 {
     if(selimg.isNull()) return;
     capt[5]=true;
+    ui->resLabel6->orig=selimg.copy();
     if(!coord) resimg[5]=selimg.copy();
     else resimg[5]=selimg.copy(selRect);
     ui->resLabel6->setPixmap(resimg[5].scaled(ui->resLabel6->size(),Qt::KeepAspectRatio));
@@ -205,6 +211,7 @@ void Imager::res7Clicked()
 {
     if(selimg.isNull()) return;
     capt[6]=true;
+    ui->resLabel7->orig=selimg.copy();
     if(!coord) resimg[6]=selimg.copy();
     else resimg[6]=selimg.copy(selRect);
     ui->resLabel7->setPixmap(resimg[6].scaled(ui->resLabel7->size(),Qt::KeepAspectRatio));
@@ -214,6 +221,7 @@ void Imager::res8Clicked()
 {
     if(selimg.isNull()) return;
     capt[7]=true;
+    ui->resLabel8->orig=selimg.copy();
     if(!coord) resimg[7]=selimg.copy();
     else resimg[7]=selimg.copy(selRect);
     ui->resLabel8->setPixmap(resimg[7].scaled(ui->resLabel8->size(),Qt::KeepAspectRatio));
@@ -223,6 +231,7 @@ void Imager::res9Clicked()
 {
     if(selimg.isNull()) return;
     capt[8]=true;
+    ui->resLabel9->orig=selimg.copy();
     if(!coord) resimg[8]=selimg.copy();
     else resimg[8]=selimg.copy(selRect);
     ui->resLabel9->setPixmap(resimg[8].scaled(ui->resLabel9->size(),Qt::KeepAspectRatio));
