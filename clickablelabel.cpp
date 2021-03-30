@@ -108,9 +108,10 @@ void ClickableLabel::mouseMoveEvent(QMouseEvent *event)
                 bigRect.setTopLeft(QPoint(bigRect.bottomRight().x()-sizee.scaled(bigRect.size(),Qt::KeepAspectRatio).width(),bigRect.bottomRight().y()-sizee.scaled(bigRect.size(),Qt::KeepAspectRatio).height()));
                 if(bigRect.top()<=0) bigRect.setTop(0);
                 if(bigRect.left()<=0) bigRect.setLeft(0);
-                if(bigRect.top()>=height()) bigRect.setTop(height()-1);
-                if(bigRect.left()>=width()) bigRect.setLeft(width()-1);
-                bigRect.setTopLeft(QPoint(bigRect.bottomRight().x()-sizee.scaled(bigRect.size(),Qt::KeepAspectRatio).width(),bigRect.bottomRight().y()-sizee.scaled(bigRect.size(),Qt::KeepAspectRatio).height()));
+                if(bigRect.top()>=height()) bigRect.setTop(height());
+                if(bigRect.left()>=width()) bigRect.setLeft(width());
+                if(bigRect.left()<=bigRect.right()) bigRect.setTopLeft(QPoint(bigRect.bottomRight().x()-sizee.scaled(bigRect.size(),Qt::KeepAspectRatio).width(),bigRect.bottomRight().y()-sizee.scaled(bigRect.size(),Qt::KeepAspectRatio).height()));
+                else bigRect.setTopLeft(QPoint(bigRect.bottomRight().x()+sizee.scaled(-bigRect.width(),-bigRect.height(),Qt::KeepAspectRatio).width(),bigRect.bottomRight().y()+sizee.scaled(-bigRect.width(),-bigRect.height(),Qt::KeepAspectRatio).height()));
                 small=orig.copy().scaled(width(),height(),Qt::KeepAspectRatio);
                 painter.begin(&small);
                 if(bigRect.left()<=bigRect.right()){
@@ -142,9 +143,10 @@ void ClickableLabel::mouseMoveEvent(QMouseEvent *event)
                 bigRect.setTopRight(QPoint(bigRect.bottomLeft().x()+sizee.scaled(bigRect.size(),Qt::KeepAspectRatio).width(),bigRect.bottomLeft().y()-sizee.scaled(bigRect.size(),Qt::KeepAspectRatio).height()));
                 if(bigRect.top()<=0) bigRect.setTop(0);
                 if(bigRect.right()<=0) bigRect.setRight(0);
-                if(bigRect.top()>=height()) bigRect.setTop(height()-1);
-                if(bigRect.right()>=width()) bigRect.setRight(width()-1);
-                bigRect.setTopRight(QPoint(bigRect.bottomLeft().x()+sizee.scaled(bigRect.size(),Qt::KeepAspectRatio).width(),bigRect.bottomLeft().y()-sizee.scaled(bigRect.size(),Qt::KeepAspectRatio).height()));
+                if(bigRect.top()>=height()) bigRect.setTop(height());
+                if(bigRect.right()>=width()) bigRect.setRight(width());
+                if(bigRect.left()<=bigRect.right()) bigRect.setTopRight(QPoint(bigRect.bottomLeft().x()+sizee.scaled(bigRect.size(),Qt::KeepAspectRatio).width(),bigRect.bottomLeft().y()-sizee.scaled(bigRect.size(),Qt::KeepAspectRatio).height()));
+                else bigRect.setTopRight(QPoint(bigRect.bottomLeft().x()-sizee.scaled(-bigRect.width(),-bigRect.height(),Qt::KeepAspectRatio).width(),bigRect.bottomLeft().y()+sizee.scaled(-bigRect.width(),-bigRect.height(),Qt::KeepAspectRatio).height()));
                 small=orig.copy().scaled(width(),height(),Qt::KeepAspectRatio);
                 painter.begin(&small);
                 if(bigRect.left()<=bigRect.right()){
@@ -176,9 +178,10 @@ void ClickableLabel::mouseMoveEvent(QMouseEvent *event)
                 bigRect.setBottomLeft(QPoint(bigRect.topRight().x()-sizee.scaled(bigRect.size(),Qt::KeepAspectRatio).width(),bigRect.topRight().y()+sizee.scaled(bigRect.size(),Qt::KeepAspectRatio).height()));
                 if(bigRect.bottom()<=0) bigRect.setBottom(0);
                 if(bigRect.left()<=0) bigRect.setLeft(0);
-                if(bigRect.bottom()>=height()) bigRect.setBottom(height()-1);
-                if(bigRect.left()>=width()) bigRect.setLeft(width()-1);
-                bigRect.setBottomLeft(QPoint(bigRect.topRight().x()-sizee.scaled(bigRect.size(),Qt::KeepAspectRatio).width(),bigRect.topRight().y()+sizee.scaled(bigRect.size(),Qt::KeepAspectRatio).height()));
+                if(bigRect.bottom()>=height()) bigRect.setBottom(height());
+                if(bigRect.left()>=width()) bigRect.setLeft(width());
+                if(bigRect.left()<=bigRect.right()) bigRect.setBottomLeft(QPoint(bigRect.topRight().x()-sizee.scaled(bigRect.size(),Qt::KeepAspectRatio).width(),bigRect.topRight().y()+sizee.scaled(bigRect.size(),Qt::KeepAspectRatio).height()));
+                else bigRect.setBottomLeft(QPoint(bigRect.topRight().x()+sizee.scaled(-bigRect.width(),-bigRect.height(),Qt::KeepAspectRatio).width(),bigRect.topRight().y()-sizee.scaled(-bigRect.width(),-bigRect.height(),Qt::KeepAspectRatio).height()));
                 small=orig.copy().scaled(width(),height(),Qt::KeepAspectRatio);
                 painter.begin(&small);
                 if(bigRect.left()<=bigRect.right()){
@@ -210,9 +213,10 @@ void ClickableLabel::mouseMoveEvent(QMouseEvent *event)
                 bigRect.setBottomRight(QPoint(bigRect.topLeft().x()+sizee.scaled(bigRect.size(),Qt::KeepAspectRatio).width(),bigRect.topLeft().y()+sizee.scaled(bigRect.size(),Qt::KeepAspectRatio).height()));
                 if(bigRect.bottom()<=0) bigRect.setBottom(0);
                 if(bigRect.right()<=0) bigRect.setRight(0);
-                if(bigRect.bottom()>=height()) bigRect.setBottom(height()-1);
-                if(bigRect.right()>=width()) bigRect.setRight(width()-1);
-                bigRect.setBottomRight(QPoint(bigRect.topLeft().x()+sizee.scaled(bigRect.size(),Qt::KeepAspectRatio).width(),bigRect.topLeft().y()+sizee.scaled(bigRect.size(),Qt::KeepAspectRatio).height()));
+                if(bigRect.bottom()>=height()) bigRect.setBottom(height());
+                if(bigRect.right()>=width()) bigRect.setRight(width());
+                if(bigRect.left()<=bigRect.right()) bigRect.setBottomRight(QPoint(bigRect.topLeft().x()+sizee.scaled(bigRect.size(),Qt::KeepAspectRatio).width(),bigRect.topLeft().y()+sizee.scaled(bigRect.size(),Qt::KeepAspectRatio).height()));
+                else bigRect.setBottomRight(QPoint(bigRect.topLeft().x()-sizee.scaled(-bigRect.width(),-bigRect.height(),Qt::KeepAspectRatio).width(),bigRect.topLeft().y()-sizee.scaled(-bigRect.width(),-bigRect.height(),Qt::KeepAspectRatio).height()));
                 small=orig.copy().scaled(width(),height(),Qt::KeepAspectRatio);
                 painter.begin(&small);
                 if(bigRect.left()<=bigRect.right()){

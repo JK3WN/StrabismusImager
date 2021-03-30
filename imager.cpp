@@ -14,8 +14,10 @@ Imager::Imager(QWidget *parent)
     ui->saveBtn->setEnabled(0);
     ui->dragLabel->setVisible(0);
     ui->bigLabel->type=2;
+    QAction *a=new QAction("Select Folder");
+    ui->menubar->addAction(a);
 
-    connect(ui->actionSelect_Folder,SIGNAL(triggered()),this,SLOT(chkFolder()));
+    connect(a,SIGNAL(triggered()),this,SLOT(chkFolder()));
     connect(ui->backBtn,SIGNAL(clicked()),this,SLOT(closeBig()));
     connect(ui->saveBtn,SIGNAL(clicked()),this,SLOT(save()));
     connect(ui->resetBtn,SIGNAL(clicked()),this,SLOT(resetImg()));
@@ -228,6 +230,7 @@ void Imager::res9Clicked()
 
 void Imager::save()
 {
+    setCursor(Qt::WaitCursor);
     max=0;
     for(int i=0;i<9;i++){
         if(capt[i]) max++;
@@ -238,19 +241,20 @@ void Imager::save()
     painter.begin(&print);
     painter.fillRect(0,0,resSize.width()*3,resSize.height()*3,QColor(255,255,255));
     if(capt[0]) painter.drawPixmap(0,0,resSize.width(),resSize.height(),resimg[0],0,0,resimg[0].width(),resimg[0].height());
-    if(capt[1]) painter.drawPixmap(resSize.width(),0,resSize.width(),resSize.height(),resimg[1],0,0,resimg[1].width(),resimg[1].height());
-    if(capt[2]) painter.drawPixmap(resSize.width()*2,0,resSize.width(),resSize.height(),resimg[2],0,0,resimg[2].width(),resimg[2].height());
-    if(capt[3]) painter.drawPixmap(0,resSize.height(),resSize.width(),resSize.height(),resimg[3],0,0,resimg[3].width(),resimg[3].height());
-    if(capt[4]) painter.drawPixmap(resSize.width(),resSize.height(),resSize.width(),resSize.height(),resimg[4],0,0,resimg[4].width(),resimg[4].height());
-    if(capt[5]) painter.drawPixmap(resSize.width()*2,resSize.height(),resSize.width(),resSize.height(),resimg[5],0,0,resimg[5].width(),resimg[5].height());
-    if(capt[6]) painter.drawPixmap(0,resSize.height()*2,resSize.width(),resSize.height(),resimg[6],0,0,resimg[6].width(),resimg[6].height());
-    if(capt[7]) painter.drawPixmap(resSize.width(),resSize.height()*2,resSize.width(),resSize.height(),resimg[7],0,0,resimg[7].width(),resimg[7].height());
-    if(capt[8]) painter.drawPixmap(resSize.width()*2,resSize.height()*2,resSize.width(),resSize.height(),resimg[8],0,0,resimg[8].width(),resimg[8].height());
+    if(capt[1]) painter.drawPixmap(resSize.width()+10,0,resSize.width(),resSize.height(),resimg[1],0,0,resimg[1].width(),resimg[1].height());
+    if(capt[2]) painter.drawPixmap(resSize.width()*2+20,0,resSize.width(),resSize.height(),resimg[2],0,0,resimg[2].width(),resimg[2].height());
+    if(capt[3]) painter.drawPixmap(0,resSize.height()+10,resSize.width(),resSize.height(),resimg[3],0,0,resimg[3].width(),resimg[3].height());
+    if(capt[4]) painter.drawPixmap(resSize.width()+10,resSize.height()+10,resSize.width(),resSize.height(),resimg[4],0,0,resimg[4].width(),resimg[4].height());
+    if(capt[5]) painter.drawPixmap(resSize.width()*2+20,resSize.height()+10,resSize.width(),resSize.height(),resimg[5],0,0,resimg[5].width(),resimg[5].height());
+    if(capt[6]) painter.drawPixmap(0,resSize.height()*2+20,resSize.width(),resSize.height(),resimg[6],0,0,resimg[6].width(),resimg[6].height());
+    if(capt[7]) painter.drawPixmap(resSize.width()+10,resSize.height()*2+20,resSize.width(),resSize.height(),resimg[7],0,0,resimg[7].width(),resimg[7].height());
+    if(capt[8]) painter.drawPixmap(resSize.width()*2+20,resSize.height()*2+20,resSize.width(),resSize.height(),resimg[8],0,0,resimg[8].width(),resimg[8].height());
     painter.end();
     imgFile.setFileName("NineCardinal.png");
     imgFile.open(QIODevice::WriteOnly);
     print.save(&imgFile,"PNG");
     imgFile.close();
+    setCursor(Qt::ArrowCursor);
 }
 
 void Imager::setCoords()
