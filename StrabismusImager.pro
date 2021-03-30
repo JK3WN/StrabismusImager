@@ -31,3 +31,4 @@ RESOURCES += \
     resources.qrc
 
 TARGET = "Nine Cardinal Positions Image Creator"
+RC_ICONS = logo.ico

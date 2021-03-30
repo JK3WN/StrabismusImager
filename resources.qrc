@@ -10,5 +10,6 @@
         <file>arrow9.PNG</file>
         <file>arrow5.PNG</file>
         <file>SplashImage.png</file>
+        <file>logo.ico</file>
     </qresource>
 </RCC>
