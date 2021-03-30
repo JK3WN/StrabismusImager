@@ -23,6 +23,15 @@ Imager::Imager(QWidget *parent)
     connect(ui->resetBtn,SIGNAL(clicked()),this,SLOT(resetImg()));
     connect(ui->bigLabel,SIGNAL(dragEnd()),this,SLOT(setCoords()));
     connect(this,SIGNAL(resetAll()),ui->bigLabel,SLOT(resetFilter()));
+    connect(ui->resLabel1,SIGNAL(resDrag()),this,SLOT(res1Dragged()));
+    connect(ui->resLabel2,SIGNAL(resDrag()),this,SLOT(res2Dragged()));
+    connect(ui->resLabel3,SIGNAL(resDrag()),this,SLOT(res3Dragged()));
+    connect(ui->resLabel4,SIGNAL(resDrag()),this,SLOT(res4Dragged()));
+    connect(ui->resLabel5,SIGNAL(resDrag()),this,SLOT(res5Dragged()));
+    connect(ui->resLabel6,SIGNAL(resDrag()),this,SLOT(res6Dragged()));
+    connect(ui->resLabel7,SIGNAL(resDrag()),this,SLOT(res7Dragged()));
+    connect(ui->resLabel8,SIGNAL(resDrag()),this,SLOT(res8Dragged()));
+    connect(ui->resLabel9,SIGNAL(resDrag()),this,SLOT(res9Dragged()));
 }
 
 Imager::~Imager()
@@ -152,8 +161,16 @@ void Imager::res1Clicked()
     if(selimg.isNull()) return;
     capt[0]=true;
     ui->resLabel1->orig=selimg.copy();
-    if(!coord) resimg[0]=selimg.copy();
-    else resimg[0]=selimg.copy(selRect);
+    if(!coord){
+        resimg[0]=selimg.copy();
+        ui->resLabel1->origRect=QRect(-2,-2,0,0);
+        ui->resLabel1->smallRect=QRect(-2,-2,0,0);
+    }
+    else{
+        resimg[0]=selimg.copy(selRect);
+        ui->resLabel1->origRect=selRect;
+        ui->resLabel1->smallRect=QRect(selRect.x()*ui->resLabel1->width()/selRect.width(),selRect.y()*ui->resLabel1->width()/selRect.width(),selRect.width()*ui->resLabel1->width()/selRect.width(),selRect.height()*ui->resLabel1->width()/selRect.width());
+    }
     ui->resLabel1->setPixmap(resimg[0].scaled(ui->resLabel1->size(),Qt::KeepAspectRatio));
 }
 
@@ -162,8 +179,16 @@ void Imager::res2Clicked()
     if(selimg.isNull()) return;
     capt[1]=true;
     ui->resLabel2->orig=selimg.copy();
-    if(!coord) resimg[1]=selimg.copy();
-    else resimg[1]=selimg.copy(selRect);
+    if(!coord){
+        resimg[1]=selimg.copy();
+        ui->resLabel2->origRect=QRect(-2,-2,0,0);
+        ui->resLabel2->smallRect=QRect(-2,-2,0,0);
+    }
+    else{
+        resimg[1]=selimg.copy(selRect);
+        ui->resLabel2->origRect=selRect;
+        ui->resLabel2->smallRect=QRect(selRect.x()*ui->resLabel2->width()/selRect.width(),selRect.y()*ui->resLabel2->width()/selRect.width(),selRect.width()*ui->resLabel2->width()/selRect.width(),selRect.height()*ui->resLabel2->width()/selRect.width());
+    }
     ui->resLabel2->setPixmap(resimg[1].scaled(ui->resLabel2->size(),Qt::KeepAspectRatio));
 }
 
@@ -172,8 +197,16 @@ void Imager::res3Clicked()
     if(selimg.isNull()) return;
     capt[2]=true;
     ui->resLabel3->orig=selimg.copy();
-    if(!coord) resimg[2]=selimg.copy();
-    else resimg[2]=selimg.copy(selRect);
+    if(!coord){
+        resimg[2]=selimg.copy();
+        ui->resLabel3->origRect=QRect(-2,-2,0,0);
+        ui->resLabel3->smallRect=QRect(-2,-2,0,0);
+    }
+    else{
+        resimg[2]=selimg.copy(selRect);
+        ui->resLabel3->origRect=selRect;
+        ui->resLabel3->smallRect=QRect(selRect.x()*ui->resLabel3->width()/selRect.width(),selRect.y()*ui->resLabel3->width()/selRect.width(),selRect.width()*ui->resLabel3->width()/selRect.width(),selRect.height()*ui->resLabel3->width()/selRect.width());
+    }
     ui->resLabel3->setPixmap(resimg[2].scaled(ui->resLabel3->size(),Qt::KeepAspectRatio));
 }
 
@@ -182,8 +215,16 @@ void Imager::res4Clicked()
     if(selimg.isNull()) return;
     capt[3]=true;
     ui->resLabel4->orig=selimg.copy();
-    if(!coord) resimg[3]=selimg.copy();
-    else resimg[3]=selimg.copy(selRect);
+    if(!coord){
+        resimg[3]=selimg.copy();
+        ui->resLabel4->origRect=QRect(-2,-2,0,0);
+        ui->resLabel4->smallRect=QRect(-2,-2,0,0);
+    }
+    else{
+        resimg[3]=selimg.copy(selRect);
+        ui->resLabel4->origRect=selRect;
+        ui->resLabel4->smallRect=QRect(selRect.x()*ui->resLabel4->width()/selRect.width(),selRect.y()*ui->resLabel4->width()/selRect.width(),selRect.width()*ui->resLabel4->width()/selRect.width(),selRect.height()*ui->resLabel4->width()/selRect.width());
+    }
     ui->resLabel4->setPixmap(resimg[3].scaled(ui->resLabel4->size(),Qt::KeepAspectRatio));
 }
 
@@ -192,8 +233,16 @@ void Imager::res5Clicked()
     if(selimg.isNull()) return;
     capt[4]=true;
     ui->resLabel5->orig=selimg.copy();
-    if(!coord) resimg[4]=selimg.copy();
-    else resimg[4]=selimg.copy(selRect);
+    if(!coord){
+        resimg[4]=selimg.copy();
+        ui->resLabel5->origRect=QRect(-2,-2,0,0);
+        ui->resLabel5->smallRect=QRect(-2,-2,0,0);
+    }
+    else{
+        resimg[4]=selimg.copy(selRect);
+        ui->resLabel5->origRect=selRect;
+        ui->resLabel5->smallRect=QRect(selRect.x()*ui->resLabel5->width()/selRect.width(),selRect.y()*ui->resLabel5->width()/selRect.width(),selRect.width()*ui->resLabel5->width()/selRect.width(),selRect.height()*ui->resLabel5->width()/selRect.width());
+    }
     ui->resLabel5->setPixmap(resimg[4].scaled(ui->resLabel5->size(),Qt::KeepAspectRatio));
 }
 
@@ -202,8 +251,16 @@ void Imager::res6Clicked()
     if(selimg.isNull()) return;
     capt[5]=true;
     ui->resLabel6->orig=selimg.copy();
-    if(!coord) resimg[5]=selimg.copy();
-    else resimg[5]=selimg.copy(selRect);
+    if(!coord){
+        resimg[5]=selimg.copy();
+        ui->resLabel6->origRect=QRect(-2,-2,0,0);
+        ui->resLabel6->smallRect=QRect(-2,-2,0,0);
+    }
+    else{
+        resimg[5]=selimg.copy(selRect);
+        ui->resLabel6->origRect=selRect;
+        ui->resLabel6->smallRect=QRect(selRect.x()*ui->resLabel6->width()/selRect.width(),selRect.y()*ui->resLabel6->width()/selRect.width(),selRect.width()*ui->resLabel6->width()/selRect.width(),selRect.height()*ui->resLabel6->width()/selRect.width());
+    }
     ui->resLabel6->setPixmap(resimg[5].scaled(ui->resLabel6->size(),Qt::KeepAspectRatio));
 }
 
@@ -212,8 +269,16 @@ void Imager::res7Clicked()
     if(selimg.isNull()) return;
     capt[6]=true;
     ui->resLabel7->orig=selimg.copy();
-    if(!coord) resimg[6]=selimg.copy();
-    else resimg[6]=selimg.copy(selRect);
+    if(!coord){
+        resimg[6]=selimg.copy();
+        ui->resLabel7->origRect=QRect(-2,-2,0,0);
+        ui->resLabel7->smallRect=QRect(-2,-2,0,0);
+    }
+    else{
+        resimg[6]=selimg.copy(selRect);
+        ui->resLabel7->origRect=selRect;
+        ui->resLabel7->smallRect=QRect(selRect.x()*ui->resLabel7->width()/selRect.width(),selRect.y()*ui->resLabel7->width()/selRect.width(),selRect.width()*ui->resLabel7->width()/selRect.width(),selRect.height()*ui->resLabel7->width()/selRect.width());
+    }
     ui->resLabel7->setPixmap(resimg[6].scaled(ui->resLabel7->size(),Qt::KeepAspectRatio));
 }
 
@@ -222,8 +287,16 @@ void Imager::res8Clicked()
     if(selimg.isNull()) return;
     capt[7]=true;
     ui->resLabel8->orig=selimg.copy();
-    if(!coord) resimg[7]=selimg.copy();
-    else resimg[7]=selimg.copy(selRect);
+    if(!coord){
+        resimg[7]=selimg.copy();
+        ui->resLabel8->origRect=QRect(-2,-2,0,0);
+        ui->resLabel8->smallRect=QRect(-2,-2,0,0);
+    }
+    else{
+        resimg[7]=selimg.copy(selRect);
+        ui->resLabel8->origRect=selRect;
+        ui->resLabel8->smallRect=QRect(selRect.x()*ui->resLabel8->width()/selRect.width(),selRect.y()*ui->resLabel8->width()/selRect.width(),selRect.width()*ui->resLabel8->width()/selRect.width(),selRect.height()*ui->resLabel8->width()/selRect.width());
+    }
     ui->resLabel8->setPixmap(resimg[7].scaled(ui->resLabel8->size(),Qt::KeepAspectRatio));
 }
 
@@ -232,8 +305,16 @@ void Imager::res9Clicked()
     if(selimg.isNull()) return;
     capt[8]=true;
     ui->resLabel9->orig=selimg.copy();
-    if(!coord) resimg[8]=selimg.copy();
-    else resimg[8]=selimg.copy(selRect);
+    if(!coord){
+        resimg[8]=selimg.copy();
+        ui->resLabel9->origRect=QRect(-2,-2,0,0);
+        ui->resLabel9->smallRect=QRect(-2,-2,0,0);
+    }
+    else{
+        resimg[8]=selimg.copy(selRect);
+        ui->resLabel9->origRect=selRect;
+        ui->resLabel9->smallRect=QRect(selRect.x()*ui->resLabel9->width()/selRect.width(),selRect.y()*ui->resLabel9->width()/selRect.width(),selRect.width()*ui->resLabel9->width()/selRect.width(),selRect.height()*ui->resLabel9->width()/selRect.width());
+    }
     ui->resLabel9->setPixmap(resimg[8].scaled(ui->resLabel9->size(),Qt::KeepAspectRatio));
 }
 
@@ -244,7 +325,7 @@ void Imager::save()
     for(int i=0;i<9;i++){
         if(capt[i]) max++;
     }
-    if(max==1) return;
+    if(max==0) return;
     QDir::setCurrent(dir->absolutePath());
     QPixmap print(resSize.width()*3,resSize.height()*3);
     painter.begin(&print);
@@ -356,4 +437,49 @@ void Imager::keyPressEvent(QKeyEvent *event)
         }
     }
     setFocus();
+}
+
+void Imager::res1Dragged()
+{
+    resimg[0]=ui->resLabel1->orig.copy(ui->resLabel1->origRect);
+}
+
+void Imager::res2Dragged()
+{
+    resimg[1]=ui->resLabel2->orig.copy(ui->resLabel2->origRect);
+}
+
+void Imager::res3Dragged()
+{
+    resimg[2]=ui->resLabel3->orig.copy(ui->resLabel3->origRect);
+}
+
+void Imager::res4Dragged()
+{
+    resimg[3]=ui->resLabel4->orig.copy(ui->resLabel4->origRect);
+}
+
+void Imager::res5Dragged()
+{
+    resimg[4]=ui->resLabel5->orig.copy(ui->resLabel5->origRect);
+}
+
+void Imager::res6Dragged()
+{
+    resimg[5]=ui->resLabel6->orig.copy(ui->resLabel6->origRect);
+}
+
+void Imager::res7Dragged()
+{
+    resimg[6]=ui->resLabel7->orig.copy(ui->resLabel7->origRect);
+}
+
+void Imager::res8Dragged()
+{
+    resimg[7]=ui->resLabel8->orig.copy(ui->resLabel8->origRect);
+}
+
+void Imager::res9Dragged()
+{
+    resimg[8]=ui->resLabel9->orig.copy(ui->resLabel9->origRect);
 }

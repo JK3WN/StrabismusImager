@@ -251,6 +251,16 @@ void ClickableLabel::mouseMoveEvent(QMouseEvent *event)
     else if(type==1){
         emit ndragged(this,event->pos());
     }
+    else{
+        end=event->pos();
+        origRect.translate((start-end)*origRect.width()/width());
+        if(origRect.top()<0) origRect.moveTop(0);
+        if(origRect.left()<0) origRect.moveLeft(0);
+        if(origRect.right()>=orig.width()) origRect.moveRight(orig.width()-1);
+        if(origRect.bottom()>=orig.height()) origRect.moveBottom(orig.height()-1);
+        setPixmap(orig.copy(origRect).scaled(width(),height(),Qt::KeepAspectRatio));
+        start=end;
+    }
 }
 
 void ClickableLabel::mouseReleaseEvent(QMouseEvent *event)
@@ -301,6 +311,9 @@ void ClickableLabel::mouseReleaseEvent(QMouseEvent *event)
     }
     else if(type==1){
         emit ndragEnd(this,event->pos());
+    }
+    else{
+        emit resDrag();
     }
 }
 

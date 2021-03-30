@@ -45,6 +45,15 @@ private slots:
     void dragging(ClickableLabel *label,QPoint point);
     void dragComp(ClickableLabel *label,QPoint point);
     void keyPressEvent(QKeyEvent *event);
+    void res1Dragged();
+    void res2Dragged();
+    void res3Dragged();
+    void res4Dragged();
+    void res5Dragged();
+    void res6Dragged();
+    void res7Dragged();
+    void res8Dragged();
+    void res9Dragged();
 
 signals:
     void filterAll(int sx,int sy,int ex,int ey,int bw,int bh);

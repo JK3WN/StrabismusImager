@@ -33,6 +33,7 @@ signals:
     void dragEnd();
     void ndragged(ClickableLabel *label,QPoint point);
     void ndragEnd(ClickableLabel *label,QPoint point);
+    void resDrag();
 
 public slots:
     void filtered(int sx,int sy,int ex,int ey,int bw,int bh);
