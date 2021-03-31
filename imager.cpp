@@ -6,6 +6,9 @@ Imager::Imager(QWidget *parent)
     , ui(new Ui::Imager)
 {
     ui->setupUi(this);
+    if(sett.value("startDir").isNull()) sett.setValue("startDir",QDir::homePath()+"/Desktop");
+    startdir=QDir(sett.value("startDir").toString());
+    savedir=startdir;
     resetImg();
     ui->saveBtn->setIcon(style()->standardIcon(QStyle::SP_DialogSaveButton));
     ui->backBtn->setIcon(style()->standardIcon(QStyle::SP_FileDialogBack));
@@ -16,13 +19,18 @@ Imager::Imager(QWidget *parent)
     ui->bigLabel->type=2;
     QAction *a=new QAction("Select Folder");
     ui->menubar->addAction(a);
+    QAction *set=new QAction("Settings");
+    ui->menubar->addAction(set);
 
     connect(a,SIGNAL(triggered()),this,SLOT(chkFolder()));
+    connect(set,SIGNAL(triggered()),this,SLOT(settings()));
+    connect(setdia,SIGNAL(setComplete(QString,QString,bool,QString)),this,SLOT(doneSetting(QString,QString,bool,QString)));
     connect(ui->backBtn,SIGNAL(clicked()),this,SLOT(closeBig()));
     connect(ui->saveBtn,SIGNAL(clicked()),this,SLOT(save()));
     connect(ui->resetBtn,SIGNAL(clicked()),this,SLOT(resetImg()));
     connect(ui->bigLabel,SIGNAL(dragEnd()),this,SLOT(setCoords()));
     connect(this,SIGNAL(resetAll()),ui->bigLabel,SLOT(resetFilter()));
+
     connect(ui->resLabel1,SIGNAL(resDrag()),this,SLOT(res1Dragged()));
     connect(ui->resLabel2,SIGNAL(resDrag()),this,SLOT(res2Dragged()));
     connect(ui->resLabel3,SIGNAL(resDrag()),this,SLOT(res3Dragged()));
@@ -41,7 +49,8 @@ Imager::~Imager()
 
 void Imager::chkFolder()
 {
-    dir=new QDir(QFileDialog::getExistingDirectory(this,"Select Folder",QDir::homePath()+"/Desktop"));
+    dir=new QDir(QFileDialog::getExistingDirectory(this,"Select Folder",startdir.absolutePath()));
+    savedir=*dir;
     list=dir->entryList(QStringList()<<"*.png"<<"*.jpg"<<"*.bmp",QDir::Files);
     mrow=0;
     mcol=0;
@@ -133,6 +142,15 @@ void Imager::resetImg()
     defimg.load(":/image/arrow9.PNG");
     ui->resLabel9->setPixmap(defimg.scaled(ui->resLabel9->size(),Qt::KeepAspectRatio));
     emit resetAll();
+    ui->resLabel1->origRect.setTopLeft(QPoint(-1,-1));
+    ui->resLabel2->origRect.setTopLeft(QPoint(-1,-1));
+    ui->resLabel3->origRect.setTopLeft(QPoint(-1,-1));
+    ui->resLabel4->origRect.setTopLeft(QPoint(-1,-1));
+    ui->resLabel5->origRect.setTopLeft(QPoint(-1,-1));
+    ui->resLabel6->origRect.setTopLeft(QPoint(-1,-1));
+    ui->resLabel7->origRect.setTopLeft(QPoint(-1,-1));
+    ui->resLabel8->origRect.setTopLeft(QPoint(-1,-1));
+    ui->resLabel9->origRect.setTopLeft(QPoint(-1,-1));
     if(!ui->imgArea->isVisible()) count=1;
     else count=0;
 }
@@ -326,7 +344,7 @@ void Imager::save()
         if(capt[i]) max++;
     }
     if(max==0) return;
-    QDir::setCurrent(dir->absolutePath());
+    QDir::setCurrent(savedir.absolutePath());
     QPixmap print(resSize.width()*3,resSize.height()*3);
     painter.begin(&print);
     painter.fillRect(0,0,resSize.width()*3,resSize.height()*3,QColor(255,255,255));
@@ -340,9 +358,16 @@ void Imager::save()
     if(capt[7]) painter.drawPixmap(resSize.width()+10,resSize.height()*2+20,resSize.width(),resSize.height(),resimg[7],0,0,resimg[7].width(),resimg[7].height());
     if(capt[8]) painter.drawPixmap(resSize.width()*2+20,resSize.height()*2+20,resSize.width(),resSize.height(),resimg[8],0,0,resimg[8].width(),resimg[8].height());
     painter.end();
-    imgFile.setFileName("NineCardinal.png");
-    imgFile.open(QIODevice::WriteOnly);
-    print.save(&imgFile,"PNG");
+    if(ispng){
+        imgFile.setFileName(fileName+".png");
+        imgFile.open(QIODevice::WriteOnly);
+        print.save(&imgFile,"PNG");
+    }
+    else{
+        imgFile.setFileName(fileName+".jpg");
+        imgFile.open(QIODevice::WriteOnly);
+        print.save(&imgFile,"JPG");
+    }
     imgFile.close();
     setCursor(Qt::ArrowCursor);
 }
@@ -482,4 +507,27 @@ void Imager::res8Dragged()
 void Imager::res9Dragged()
 {
     resimg[8]=ui->resLabel9->orig.copy(ui->resLabel9->origRect);
+}
+
+void Imager::settings()
+{
+    setdia->ui->startDire->setText(startdir.absolutePath());
+    setdia->ui->nameEdit->setText(fileName);
+    setdia->ui->saveDire->setText(savedir.absolutePath());
+    if(ispng){
+        setdia->ui->pngBtn->setChecked(1);
+    }
+    else{
+        setdia->ui->jpgBtn->setChecked(1);
+    }
+    setdia->show();
+}
+
+void Imager::doneSetting(QString startDirectory,QString fileName,bool isPNG,QString saveDirectory)
+{
+    startdir=QDir(startDirectory);
+    sett.setValue("startDir",startdir.absolutePath());
+    savedir=QDir(saveDirectory);
+    this->fileName=fileName;
+    this->ispng=isPNG;
 }

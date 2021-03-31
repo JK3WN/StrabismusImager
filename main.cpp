@@ -7,6 +7,7 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     QCoreApplication::setApplicationName("Nine Cardinal Positions Image Creator");
+    QCoreApplication::setOrganizationName("HVRC");
     QPixmap pixmap(":/image/SplashImage.png");
     QSplashScreen splash(pixmap.scaled(960,540,Qt::KeepAspectRatio,Qt::SmoothTransformation));
     splash.show();

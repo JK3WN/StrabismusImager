@@ -252,6 +252,7 @@ void ClickableLabel::mouseMoveEvent(QMouseEvent *event)
         emit ndragged(this,event->pos());
     }
     else{
+        if(origRect.topLeft()==QPoint(-1,-1)) return;
         end=event->pos();
         origRect.translate((start-end)*origRect.width()/width());
         if(origRect.top()<0) origRect.moveTop(0);
@@ -392,4 +393,8 @@ void ClickableLabel::hoverMove(QHoverEvent *event)
             adjust=-1;
         }
     }
+    else if(this->type==0&&origRect.topLeft()!=QPoint(-1,-1)){
+        setCursor(Qt::SizeAllCursor);
+    }
+    else setCursor(Qt::ArrowCursor);
 }

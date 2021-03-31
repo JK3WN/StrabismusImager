@@ -12,15 +12,18 @@ SOURCES += \
     clickablelabel.cpp \
     main.cpp \
     imager.cpp \
+    settingdialog.cpp \
     verticalscrollarea.cpp
 
 HEADERS += \
     clickablelabel.h \
     imager.h \
+    settingdialog.h \
     verticalscrollarea.h
 
 FORMS += \
-    imager.ui
+    imager.ui \
+    settingdialog.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
