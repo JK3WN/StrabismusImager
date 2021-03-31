@@ -33,5 +33,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 RESOURCES += \
     resources.qrc
 
-TARGET = "Nine Cardinal Positions Image Creator"
+TARGET = "Nine Cardinal Image Creator"
 RC_ICONS = logo.ico
